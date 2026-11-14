@@ -1,0 +1,130 @@
+{
+  "apollo-13": {
+    "id": "apollo-13",
+    "sector": "moon",
+    "name": "APOLLO 13",
+    "nickname": "The Lunar Lifeboat",
+    "year": 1970,
+    "destination": "The Moon",
+    "summary": "An oxygen tank exploded on the way to the Moon and crippled the spacecraft. Survive the meteoroid storm, then keep an emergency lunar outpost alive!",
+    "briefing": [
+      "56 hours after launch, Oxygen Tank 2 ruptured and the Service Module lost most of its power and oxygen.",
+      "In this simulation, you fly through a meteoroid storm and crash-land near the lunar surface.",
+      "Keep your crew alive for 6 Sols and push Science to 100% to rewrite history!"
+    ],
+    "cockpit": {
+      "hazard": "meteoroid",
+      "hazardLabel": "METEOROID STORM",
+      "targetBody": "moon",
+      "instructions": "Dodge the flaming meteoroids! Every rock you avoid saves power for your outpost."
+    },
+    "environment": {
+      "theme": "lunar",
+      "skyTop": "#02040c",
+      "skyBottom": "#0b1226",
+      "ground": "#8a8f9c",
+      "groundShadow": "#4b5160",
+      "accent": "#00F0FF",
+      "skyBody": "earth"
+    },
+    "startingSubsystems": {
+      "lifeSupport": 55,
+      "shielding": 45,
+      "power": 60,
+      "food": 65,
+      "science": 5,
+      "crewHealth": 100
+    },
+    "history": {
+      "realTitle": "What really happened (April 1970)",
+      "real": [
+        "April 13, 1970: Oxygen Tank 2 exploded about 56 hours into the flight.",
+        "The Moon landing was cancelled. The crew squeezed into the Lunar Module 'Aquarius' and used it as a lifeboat.",
+        "Engineers on Earth built a square-to-round CO2 filter adapter out of tape, hoses and plastic bags.",
+        "Jim Lovell, Jack Swigert and Fred Haise splashed down safely on April 17, 1970 — a 'successful failure', but no Moon science was done."
+      ],
+      "rewriteTitle": "How YOU saved the mission",
+      "rewrite": [
+        "You dodged the meteoroid storm and kept your hull strong.",
+        "You read real NASA DONKI space weather alerts and raised shields at the right moments.",
+        "You balanced oxygen, power and food for 6 Sols on the lunar surface.",
+        "You completed 100% of the planned Moon science — the landing Apollo 13 never got to make!"
+      ]
+    },
+    "patch": {
+      "title": "LUNAR LIFEBOAT",
+      "subtitle": "APOLLO 13 · REWRITTEN",
+      "primary": "#00F0FF",
+      "secondary": "#FFB800",
+      "planet": "#b8bcc8"
+    },
+    "lockedMissions": [
+      { "name": "ARTEMIS BASE ALPHA", "teaser": "Build the first long-term camp at the lunar South Pole." },
+      { "name": "SHACKLETON ICE HUNT", "teaser": "Dig for frozen water in a crater that never sees sunlight." }
+    ]
+  },
+  "mars-lander": {
+    "id": "mars-lander",
+    "sector": "mars",
+    "name": "MARS POLAR LANDER",
+    "nickname": "The Red Storm",
+    "year": 1999,
+    "destination": "Mars",
+    "summary": "Solar flares and a descent anomaly threatened the lander. Dodge incoming solar flare plasma, then stabilize your Martian outpost!",
+    "briefing": [
+      "On December 3, 1999 the Mars Polar Lander went silent just before touching down near the Martian south pole.",
+      "In this simulation, you steer through blasts of solar flare plasma and survive a rough landing.",
+      "Keep your outpost alive for 6 Sols and push Science to 100% to rewrite history!"
+    ],
+    "cockpit": {
+      "hazard": "flare",
+      "hazardLabel": "SOLAR FLARE PLASMA",
+      "targetBody": "mars",
+      "instructions": "Dodge the solar flare plasma bolts! Every blast you avoid saves power for your outpost."
+    },
+    "environment": {
+      "theme": "martian",
+      "skyTop": "#3a1a1f",
+      "skyBottom": "#c9785a",
+      "ground": "#b5532f",
+      "groundShadow": "#6e2a17",
+      "accent": "#FFB800",
+      "skyBody": "phobos"
+    },
+    "startingSubsystems": {
+      "lifeSupport": 60,
+      "shielding": 40,
+      "power": 55,
+      "food": 60,
+      "science": 5,
+      "crewHealth": 100
+    },
+    "history": {
+      "realTitle": "What really happened (December 1999)",
+      "real": [
+        "Mars Polar Lander launched on January 3, 1999 to study water ice near the Martian south pole.",
+        "Contact was lost on December 3, 1999 during the final descent — no signal ever came back.",
+        "The most likely cause: the landing legs jolted open, and the computer mistook that bump for touchdown and shut the engine off too early.",
+        "NASA learned from it — later landers like Phoenix (2008) reached the polar region safely."
+      ],
+      "rewriteTitle": "How YOU saved the mission",
+      "rewrite": [
+        "You flew through the solar flare plasma and protected the lander's hull.",
+        "You used real NASA DONKI flare, CME and particle-storm alerts to time your shields.",
+        "You kept the crew breathing, fed and powered for 6 Sols on Mars.",
+        "You finished 100% of the polar science — the discoveries Mars Polar Lander never got to send home!"
+      ]
+    },
+    "patch": {
+      "title": "RED STORM",
+      "subtitle": "MARS POLAR LANDER · REWRITTEN",
+      "primary": "#FFB800",
+      "secondary": "#FF3B5C",
+      "planet": "#c1440e"
+    },
+    "lockedMissions": [
+      { "name": "OLYMPUS MONS OUTPOST", "teaser": "Set up camp on the tallest volcano in the Solar System." },
+      { "name": "JEZERO DELTA SAMPLE RUN", "teaser": "Race a rover across an ancient Martian river delta." }
+    ]
+  }
+}

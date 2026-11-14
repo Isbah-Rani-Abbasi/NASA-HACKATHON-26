@@ -1,0 +1,742 @@
+{
+  "source": "NASA CCMC DONKI (https://ccmc.gsfc.nasa.gov/DONKI-API/get/)",
+  "period": "2024-05-01 to 2024-05-31 (Gannon / Mother's Day solar storms)",
+  "retrieved": "2026-11-14",
+  "FLR": [
+    {
+      "flrID": "2024-05-03T02:11:00-FLR-001",
+      "instruments": [
+        {
+          "displayName": "GOES-P: EXIS 1.0-8.0"
+        }
+      ],
+      "beginTime": "2024-05-03T02:11Z",
+      "peakTime": "2024-05-03T02:22Z",
+      "endTime": "2024-05-03T02:27Z",
+      "classType": "X1.6",
+      "sourceLocation": "N26E05",
+      "activeRegionNum": 13663,
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/30403/-1"
+    },
+    {
+      "flrID": "2024-05-05T05:47:00-FLR-001",
+      "instruments": [
+        {
+          "displayName": "GOES-P: EXIS 1.0-8.0"
+        }
+      ],
+      "beginTime": "2024-05-05T05:47Z",
+      "peakTime": "2024-05-05T06:01Z",
+      "endTime": "2024-05-05T06:07Z",
+      "classType": "X1.3",
+      "sourceLocation": "N26W20",
+      "activeRegionNum": 13663,
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/30457/-1"
+    },
+    {
+      "flrID": "2024-05-05T11:41:00-FLR-001",
+      "instruments": [
+        {
+          "displayName": "GOES-P: EXIS 1.0-8.0"
+        }
+      ],
+      "beginTime": "2024-05-05T11:41Z",
+      "peakTime": "2024-05-05T11:54Z",
+      "endTime": "2024-05-05T12:16Z",
+      "classType": "X1.2",
+      "sourceLocation": "N26W23",
+      "activeRegionNum": 13663,
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/30461/-1"
+    },
+    {
+      "flrID": "2024-05-06T05:38:00-FLR-001",
+      "instruments": [
+        {
+          "displayName": "GOES-P: EXIS 1.0-8.0"
+        }
+      ],
+      "beginTime": "2024-05-06T05:38Z",
+      "peakTime": "2024-05-06T06:35Z",
+      "endTime": "2024-05-06T06:47Z",
+      "classType": "X4.5",
+      "sourceLocation": "N26W35",
+      "activeRegionNum": 13663,
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/30484/-1"
+    },
+    {
+      "flrID": "2024-05-08T01:33:00-FLR-001",
+      "instruments": [
+        {
+          "displayName": "GOES-P: EXIS 1.0-8.0"
+        }
+      ],
+      "beginTime": "2024-05-08T01:33Z",
+      "peakTime": "2024-05-08T01:41Z",
+      "endTime": "2024-05-08T01:48Z",
+      "classType": "X1.0",
+      "sourceLocation": "N25W60",
+      "activeRegionNum": 13663,
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/30548/-1"
+    },
+    {
+      "flrID": "2024-05-08T04:37:00-FLR-001",
+      "instruments": [
+        {
+          "displayName": "GOES-P: EXIS 1.0-8.0"
+        }
+      ],
+      "beginTime": "2024-05-08T04:37Z",
+      "peakTime": "2024-05-08T05:09Z",
+      "endTime": "2024-05-08T05:32Z",
+      "classType": "X1.0",
+      "sourceLocation": "S22W10",
+      "activeRegionNum": 13664,
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/30551/-1"
+    },
+    {
+      "flrID": "2024-05-08T21:08:00-FLR-001",
+      "instruments": [
+        {
+          "displayName": "GOES-P: EXIS 1.0-8.0"
+        }
+      ],
+      "beginTime": "2024-05-08T21:08Z",
+      "peakTime": "2024-05-08T21:40Z",
+      "endTime": "2024-05-08T23:10Z",
+      "classType": "X1.0",
+      "sourceLocation": "S20W17",
+      "activeRegionNum": 13664,
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/30601/-1"
+    },
+    {
+      "flrID": "2024-05-09T08:45:00-FLR-001",
+      "instruments": [
+        {
+          "displayName": "GOES-P: EXIS 1.0-8.0"
+        }
+      ],
+      "beginTime": "2024-05-09T08:45Z",
+      "peakTime": "2024-05-09T09:13Z",
+      "endTime": "2024-05-09T09:36Z",
+      "classType": "X2.2",
+      "sourceLocation": "S20W25",
+      "activeRegionNum": 13664,
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/30605/-1"
+    },
+    {
+      "flrID": "2024-05-09T17:23:00-FLR-001",
+      "instruments": [
+        {
+          "displayName": "GOES-P: EXIS 1.0-8.0"
+        }
+      ],
+      "beginTime": "2024-05-09T17:23Z",
+      "peakTime": "2024-05-09T17:44Z",
+      "endTime": "2024-05-09T18:00Z",
+      "classType": "X1.1",
+      "sourceLocation": "S18W29",
+      "activeRegionNum": 13664,
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/30634/-1"
+    },
+    {
+      "flrID": "2024-05-10T06:27:00-FLR-001",
+      "instruments": [
+        {
+          "displayName": "GOES-P: EXIS 1.0-8.0"
+        }
+      ],
+      "beginTime": "2024-05-10T06:27Z",
+      "peakTime": "2024-05-10T06:54Z",
+      "endTime": "2024-05-10T07:06Z",
+      "classType": "X3.9",
+      "sourceLocation": "S18W37",
+      "activeRegionNum": 13664,
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/30666/-1"
+    },
+    {
+      "flrID": "2024-05-11T01:10:00-FLR-001",
+      "instruments": [
+        {
+          "displayName": "GOES-P: EXIS 1.0-8.0"
+        }
+      ],
+      "beginTime": "2024-05-11T01:10Z",
+      "peakTime": "2024-05-11T01:23Z",
+      "endTime": "2024-05-11T01:39Z",
+      "classType": "X5.8",
+      "sourceLocation": "S17W47",
+      "activeRegionNum": 13664,
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/30711/-1"
+    },
+    {
+      "flrID": "2024-05-11T11:15:00-FLR-001",
+      "instruments": [
+        {
+          "displayName": "GOES-P: EXIS 1.0-8.0"
+        }
+      ],
+      "beginTime": "2024-05-11T11:15Z",
+      "peakTime": "2024-05-11T11:44Z",
+      "endTime": "2024-05-11T12:05Z",
+      "classType": "X1.5",
+      "sourceLocation": "S19W60",
+      "activeRegionNum": 13664,
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/30722/-1"
+    },
+    {
+      "flrID": "2024-05-12T16:11:00-FLR-001",
+      "instruments": [
+        {
+          "displayName": "GOES-P: EXIS 1.0-8.0"
+        }
+      ],
+      "beginTime": "2024-05-12T16:11Z",
+      "peakTime": "2024-05-12T16:26Z",
+      "endTime": "2024-05-12T16:38Z",
+      "classType": "X1.0",
+      "sourceLocation": "S21W75",
+      "activeRegionNum": 13664,
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/30760/-1"
+    },
+    {
+      "flrID": "2024-05-14T02:03:00-FLR-001",
+      "instruments": [
+        {
+          "displayName": "GOES-P: EXIS 1.0-8.0"
+        }
+      ],
+      "beginTime": "2024-05-14T02:03Z",
+      "peakTime": "2024-05-14T02:09Z",
+      "endTime": "2024-05-14T02:19Z",
+      "classType": "X1.7",
+      "sourceLocation": "S19W89",
+      "activeRegionNum": 13664,
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/30832/-1"
+    },
+    {
+      "flrID": "2024-05-14T12:40:00-FLR-001",
+      "instruments": [
+        {
+          "displayName": "GOES-P: EXIS 1.0-8.0"
+        }
+      ],
+      "beginTime": "2024-05-14T12:40Z",
+      "peakTime": "2024-05-14T12:55Z",
+      "endTime": "2024-05-14T13:05Z",
+      "classType": "X1.2",
+      "sourceLocation": "S19W90",
+      "activeRegionNum": 13664,
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/30837/-1"
+    },
+    {
+      "flrID": "2024-05-14T16:46:00-FLR-001",
+      "instruments": [
+        {
+          "displayName": "GOES-P: EXIS 1.0-8.0"
+        }
+      ],
+      "beginTime": "2024-05-14T16:46Z",
+      "peakTime": "2024-05-14T16:51Z",
+      "endTime": "2024-05-14T17:02Z",
+      "classType": "X8.7",
+      "sourceLocation": "S19W90",
+      "activeRegionNum": 13664,
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/FLR/30849/-1"
+    }
+  ],
+  "CME": [
+    {
+      "activityID": "2024-05-09T09:24:00-CME-001",
+      "startTime": "2024-05-09T09:24Z",
+      "instruments": [
+        {
+          "displayName": "SOHO: LASCO/C2"
+        },
+        {
+          "displayName": "SOHO: LASCO/C3"
+        },
+        {
+          "displayName": "STEREO A: SECCHI/COR2"
+        }
+      ],
+      "sourceLocation": "S20W25",
+      "activeRegionNum": 13664,
+      "note": "Halo CME visible in SOHO LASCO C2, C3, and STEREO A COR2 imagery. This halo is associated with the X2.2 class flare from AR13664 peaking at 2024-05-09T09:13Z. A clear EUV wave is visible in SDO/AIA 193 and 211 crossing towards the central meridian and towards the limb in the sout",
+      "cmeAnalyses": [
+        {
+          "isMostAccurate": true,
+          "time21_5": "2024-05-09T11:56Z",
+          "latitude": -6,
+          "longitude": 19,
+          "halfAngle": 45,
+          "speed": 1330,
+          "type": "O"
+        }
+      ],
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30619/-1"
+    },
+    {
+      "activityID": "2024-05-11T01:36:00-CME-001",
+      "startTime": "2024-05-11T01:36Z",
+      "instruments": [
+        {
+          "displayName": "SOHO: LASCO/C2"
+        },
+        {
+          "displayName": "SOHO: LASCO/C3"
+        },
+        {
+          "displayName": "STEREO A: SECCHI/COR2"
+        }
+      ],
+      "sourceLocation": "S17W47",
+      "activeRegionNum": 13664,
+      "note": "Ear-shaped bright partial halo CME with a very complex shape brighter bulk and a fainter somewhat asymmetric full halo shock. The CME is associated with the X5.8 flare and a significant eruption (massive dimming) and EUV wave seen in SDO 193.",
+      "cmeAnalyses": [
+        {
+          "isMostAccurate": true,
+          "time21_5": "2024-05-11T04:22Z",
+          "latitude": 0,
+          "longitude": 51,
+          "halfAngle": 51,
+          "speed": 1263,
+          "type": "O"
+        }
+      ],
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30719/-1"
+    },
+    {
+      "activityID": "2024-05-13T09:12:00-CME-001",
+      "startTime": "2024-05-13T09:12Z",
+      "instruments": [
+        {
+          "displayName": "SOHO: LASCO/C2"
+        },
+        {
+          "displayName": "SOHO: LASCO/C3"
+        },
+        {
+          "displayName": "STEREO A: SECCHI/COR2"
+        }
+      ],
+      "sourceLocation": "S25W75",
+      "activeRegionNum": 13664,
+      "note": "Full asymmetric halo CME seen to the SW in all three coronagraphs. Source is a large eruption and several M-class flares from Active Region 13664, including a long-duration M4.9 flare associated with the post-eruptive arcades. Widely opening field lines and a rising loop of eject",
+      "cmeAnalyses": [
+        {
+          "isMostAccurate": true,
+          "time21_5": "2024-05-13T11:53Z",
+          "latitude": -36,
+          "longitude": 72,
+          "halfAngle": 49,
+          "speed": 1456,
+          "type": "O"
+        }
+      ],
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30814/-1"
+    },
+    {
+      "activityID": "2024-05-14T17:00:00-CME-001",
+      "startTime": "2024-05-14T17:00Z",
+      "instruments": [
+        {
+          "displayName": "SOHO: LASCO/C2"
+        },
+        {
+          "displayName": "SOHO: LASCO/C3"
+        },
+        {
+          "displayName": "STEREO A: SECCHI/COR2"
+        }
+      ],
+      "sourceLocation": "S19W96",
+      "activeRegionNum": 13664,
+      "note": "Bright CME from behind the west limb, the first in a series of two closely following CMEs. Its source is the occulted X8.7 flare from AR 3664, just over the limb. Coronal signatures include a massive EUV wave and field line movement/restructuring of magnetic field behind the limb",
+      "cmeAnalyses": [
+        {
+          "isMostAccurate": true,
+          "time21_5": "2024-05-14T18:36Z",
+          "latitude": 3,
+          "longitude": 96,
+          "halfAngle": 37,
+          "speed": 2119,
+          "type": "R"
+        }
+      ],
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30867/-1"
+    },
+    {
+      "activityID": "2024-05-14T17:48:00-CME-001",
+      "startTime": "2024-05-14T17:48Z",
+      "instruments": [
+        {
+          "displayName": "SOHO: LASCO/C2"
+        },
+        {
+          "displayName": "SOHO: LASCO/C3"
+        },
+        {
+          "displayName": "STEREO A: SECCHI/COR2"
+        }
+      ],
+      "sourceLocation": "N18E72",
+      "activeRegionNum": 13682,
+      "note": "Very wide eruption to the NE in all coronagraphs, notably bright with a twisted flux-rope structure beautifully observed in SOHO LASCO C2. The source is an eruption from new AR 3682, associated with an M4.4 class flare observed in SDO AIA 131. Also observed as field line movement",
+      "cmeAnalyses": [
+        {
+          "isMostAccurate": true,
+          "time21_5": "2024-05-14T20:33Z",
+          "latitude": 16,
+          "longitude": -72,
+          "halfAngle": 43,
+          "speed": 1292,
+          "type": "O"
+        }
+      ],
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30883/-1"
+    },
+    {
+      "activityID": "2024-05-15T08:36:00-CME-001",
+      "startTime": "2024-05-15T08:36Z",
+      "instruments": [
+        {
+          "displayName": "SOHO: LASCO/C2"
+        },
+        {
+          "displayName": "SOHO: LASCO/C3"
+        },
+        {
+          "displayName": "STEREO A: SECCHI/COR2"
+        }
+      ],
+      "sourceLocation": "S15W90",
+      "activeRegionNum": 13664,
+      "note": "Bright CME seen due West in SOHO LASCO C2/C3 and STEREO A COR2. Source is EUV wave seen beyond the SW limb starting at 2024-05-15T08:18Z in SDO AIA 171/193. Widely opening field lines with northern deflection seen on or just beyond the SW limb at an apparent latitude of S15 (befo",
+      "cmeAnalyses": [
+        {
+          "isMostAccurate": true,
+          "time21_5": "2024-05-15T10:33Z",
+          "latitude": 2,
+          "longitude": 105,
+          "halfAngle": 31,
+          "speed": 1766,
+          "type": "O"
+        }
+      ],
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30891/-1"
+    },
+    {
+      "activityID": "2024-05-15T14:53:00-CME-001",
+      "startTime": "2024-05-15T14:53Z",
+      "instruments": [
+        {
+          "displayName": "STEREO A: SECCHI/COR2"
+        },
+        {
+          "displayName": "SOHO: LASCO/C2"
+        },
+        {
+          "displayName": "SOHO: LASCO/C3"
+        }
+      ],
+      "sourceLocation": "",
+      "activeRegionNum": 13685,
+      "note": "Wide CME seen to the SE in all coronagraphs. A data gap in SOHO that will not backfill from 2024-05-15T13:36Z - 2024-05-15T16:05Z in C2 (T13:40Z-T16:30Z in C3) missed a large portion of the event, but it is still observed in later frames. Associated with an X2.9 flare from new AR",
+      "cmeAnalyses": [
+        {
+          "isMostAccurate": true,
+          "time21_5": "2024-05-15T16:55Z",
+          "latitude": -17,
+          "longitude": -92,
+          "halfAngle": 42,
+          "speed": 1570,
+          "type": "O"
+        }
+      ],
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30948/-1"
+    },
+    {
+      "activityID": "2024-05-15T21:12:00-CME-001",
+      "startTime": "2024-05-15T21:12Z",
+      "instruments": [
+        {
+          "displayName": "SOHO: LASCO/C2"
+        },
+        {
+          "displayName": "SOHO: LASCO/C3"
+        }
+      ],
+      "sourceLocation": "",
+      "activeRegionNum": null,
+      "note": "CME visible to the west in SOHO LASCO C2/C3. Not visible in STEREO A COR2 due to a data gap. The source can be seen as opening field lines starting at 2024-05-15T20:39Z best seen in SDO AIA 171/193 and GOES SUVI 284. A potential candidate active region is Active Region 13664, loc",
+      "cmeAnalyses": [
+        {
+          "isMostAccurate": true,
+          "time21_5": "2024-05-15T23:28Z",
+          "latitude": 2,
+          "longitude": 110,
+          "halfAngle": 29,
+          "speed": 1269,
+          "type": "O"
+        }
+      ],
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30923/-1"
+    },
+    {
+      "activityID": "2024-05-16T08:12:00-CME-001",
+      "startTime": "2024-05-16T08:12Z",
+      "instruments": [
+        {
+          "displayName": "SOHO: LASCO/C2"
+        },
+        {
+          "displayName": "SOHO: LASCO/C3"
+        },
+        {
+          "displayName": "STEREO A: SECCHI/COR2"
+        }
+      ],
+      "sourceLocation": "S15E70",
+      "activeRegionNum": null,
+      "note": "Narrow CME visible to the east in SOHO LASCO C2/C3 and STEREO A COR2. The source is unclear, but faint opening field lines and some brightening can be seen around S15E70 in SDO AIA 193 starting around 2024-05-16T07:00Z. The eruption is not clearly visible in STEREO A EUV imagery ",
+      "cmeAnalyses": [
+        {
+          "isMostAccurate": true,
+          "time21_5": "2024-05-16T10:49Z",
+          "latitude": -5,
+          "longitude": -70,
+          "halfAngle": 17,
+          "speed": 1298,
+          "type": "O"
+        }
+      ],
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30970/-1"
+    },
+    {
+      "activityID": "2024-05-16T13:38:00-CME-001",
+      "startTime": "2024-05-16T13:38Z",
+      "instruments": [
+        {
+          "displayName": "STEREO A: SECCHI/COR2"
+        }
+      ],
+      "sourceLocation": "",
+      "activeRegionNum": 13664,
+      "note": "CME seen to the W in STEREO COR2A, not yet observed in SOHO LASCO due to a lengthy planned data gap that will end at 2024-05-17T02:10Z. The source is far-sided around the west limb, and very likely old AR 3664, estimated to be located around W120 at this time. Best observed as fi",
+      "cmeAnalyses": [
+        {
+          "isMostAccurate": true,
+          "time21_5": "2024-05-16T16:02Z",
+          "latitude": -2,
+          "longitude": 120,
+          "halfAngle": 27,
+          "speed": 1452,
+          "type": "O"
+        }
+      ],
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/30936/-1"
+    },
+    {
+      "activityID": "2024-05-18T13:38:00-CME-001",
+      "startTime": "2024-05-18T13:38Z",
+      "instruments": [
+        {
+          "displayName": "STEREO A: SECCHI/COR2"
+        },
+        {
+          "displayName": "SOHO: LASCO/C2"
+        },
+        {
+          "displayName": "SOHO: LASCO/C3"
+        }
+      ],
+      "sourceLocation": "",
+      "activeRegionNum": null,
+      "note": "This CME is visible to the W in STEREO A COR2 and SOHO LASCO C2/C3.  Imagery of this CME was affected by the scheduled calibration maneuvers which entailed a reduction in LASCO imagery cadence. Source is narrow ejecta seen from beyond the W limb at an apparent latitude of S20 sta",
+      "cmeAnalyses": [
+        {
+          "isMostAccurate": true,
+          "time21_5": "2024-05-18T15:18Z",
+          "latitude": -2,
+          "longitude": null,
+          "halfAngle": 20,
+          "speed": 1585,
+          "type": "O"
+        }
+      ],
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31018/-1"
+    },
+    {
+      "activityID": "2024-05-20T05:36:00-CME-001",
+      "startTime": "2024-05-20T05:36Z",
+      "instruments": [
+        {
+          "displayName": "SOHO: LASCO/C2"
+        },
+        {
+          "displayName": "SOHO: LASCO/C3"
+        },
+        {
+          "displayName": "STEREO A: SECCHI/COR2"
+        }
+      ],
+      "sourceLocation": "",
+      "activeRegionNum": null,
+      "note": "Fast halo CME visible in SOHO LASCO C2/C3 and STEREO A COR2. The source is believed to be backsided, with moving field lines and EUV wave visible in SDO AIA 171/193 at 2024-05-20T05:22Z. A filament eruption and C6.7 flare peaking at 2024-05-20T05:54Z from Active Region 3683 (appr",
+      "cmeAnalyses": [
+        {
+          "isMostAccurate": true,
+          "time21_5": "2024-05-20T06:40Z",
+          "latitude": 2,
+          "longitude": 172,
+          "halfAngle": 45,
+          "speed": 2678,
+          "type": "R"
+        }
+      ],
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/CME/31034/-1"
+    }
+  ],
+  "SEP": [
+    {
+      "sepID": "2024-05-09T13:59:00-SEP-001",
+      "eventTime": "2024-05-09T13:59Z",
+      "instruments": [
+        {
+          "displayName": "MODEL: REleASE:ACE/EPAM 15.8-39.8 MeV"
+        }
+      ],
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/SEP/30609/-1"
+    },
+    {
+      "sepID": "2024-05-09T14:25:00-SEP-001",
+      "eventTime": "2024-05-09T14:25Z",
+      "instruments": [
+        {
+          "displayName": "MODEL: REleASE:SOHO/EPHIN 15.8-39.8 MeV"
+        }
+      ],
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/SEP/30610/-1"
+    },
+    {
+      "sepID": "2024-05-10T12:59:00-SEP-001",
+      "eventTime": "2024-05-10T12:59Z",
+      "instruments": [
+        {
+          "displayName": "SOHO: COSTEP 15.8-39.8 MeV"
+        }
+      ],
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/SEP/30675/-1"
+    },
+    {
+      "sepID": "2024-05-10T13:02:00-SEP-001",
+      "eventTime": "2024-05-10T13:02Z",
+      "instruments": [
+        {
+          "displayName": "SOHO: COSTEP 28.2-50.1 MeV"
+        }
+      ],
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/SEP/30676/-1"
+    },
+    {
+      "sepID": "2024-05-10T13:35:00-SEP-001",
+      "eventTime": "2024-05-10T13:35Z",
+      "instruments": [
+        {
+          "displayName": "GOES-P: SEISS >10 MeV"
+        }
+      ],
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/SEP/30677/-1"
+    },
+    {
+      "sepID": "2024-05-10T14:50:00-SEP-001",
+      "eventTime": "2024-05-10T14:50Z",
+      "instruments": [
+        {
+          "displayName": "STEREO A: IMPACT 13-100 MeV"
+        }
+      ],
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/SEP/30684/-1"
+    },
+    {
+      "sepID": "2024-05-11T02:10:00-SEP-001",
+      "eventTime": "2024-05-11T02:10Z",
+      "instruments": [
+        {
+          "displayName": "GOES-P: SEISS >100 MeV"
+        }
+      ],
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/SEP/30714/-1"
+    },
+    {
+      "sepID": "2024-05-11T04:07:00-SEP-001",
+      "eventTime": "2024-05-11T04:07Z",
+      "instruments": [
+        {
+          "displayName": "STEREO A: IMPACT 13-100 MeV"
+        }
+      ],
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/SEP/30717/-1"
+    },
+    {
+      "sepID": "2024-05-13T12:44:00-SEP-001",
+      "eventTime": "2024-05-13T12:44Z",
+      "instruments": [
+        {
+          "displayName": "STEREO A: IMPACT 13-100 MeV"
+        }
+      ],
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/SEP/30811/-1"
+    },
+    {
+      "sepID": "2024-05-13T13:10:00-SEP-001",
+      "eventTime": "2024-05-13T13:10Z",
+      "instruments": [
+        {
+          "displayName": "MODEL: REleASE:SOHO/EPHIN 15.8-39.8 MeV"
+        }
+      ],
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/SEP/30807/-1"
+    },
+    {
+      "sepID": "2024-05-13T14:00:00-SEP-001",
+      "eventTime": "2024-05-13T14:00Z",
+      "instruments": [
+        {
+          "displayName": "GOES-P: SEISS >10 MeV"
+        }
+      ],
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/SEP/30817/-1"
+    },
+    {
+      "sepID": "2024-05-13T16:19:00-SEP-001",
+      "eventTime": "2024-05-13T16:19Z",
+      "instruments": [
+        {
+          "displayName": "MODEL: REleASE:ACE/EPAM 15.8-39.8 MeV"
+        }
+      ],
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/SEP/30820/-1"
+    },
+    {
+      "sepID": "2024-05-13T18:07:00-SEP-001",
+      "eventTime": "2024-05-13T18:07Z",
+      "instruments": [
+        {
+          "displayName": "SOHO: COSTEP 15.8-39.8 MeV"
+        }
+      ],
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/SEP/30824/-1"
+    },
+    {
+      "sepID": "2024-05-13T18:07:00-SEP-002",
+      "eventTime": "2024-05-13T18:07Z",
+      "instruments": [
+        {
+          "displayName": "SOHO: COSTEP 28.2-50.1 MeV"
+        }
+      ],
+      "link": "https://ccmc.gsfc.nasa.gov/DONKI/view/SEP/30825/-1"
+    }
+  ]
+}
