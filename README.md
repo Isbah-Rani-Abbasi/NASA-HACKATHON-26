@@ -6,9 +6,24 @@ fly through a space storm, survive a crash landing, and run a habitat on the Moo
 They solve emergencies built from **real NASA DONKI space-weather data** and **NASA OSDR biology facts**
 by making smart **resource trade-offs**, and rewrite history.
 
-> The 7-minute judge pitch and demo script are in [PITCH.md](PITCH.md).
+## 🚀 Play it now
 
-## Quick start
+**Live game:** https://nasa-hackathon-26.vercel.app
+
+No login, download or install needed. It runs in any modern browser on a laptop, desktop or tablet. Turn sound on for the full experience.
+
+**Source code:** https://github.com/Isbah-Rani-Abbasi/NASA-HACKATHON-26
+
+> The 7-minute judge pitch and demo script are in [PITCH.md](PITCH.md).
+> Submission materials (slides, form answers, links and the AI prompt log) are in [`submission/`](submission/).
+
+## Built with AI assistance
+
+This project was built with **Claude Code** (Anthropic) as an AI coding assistant. The full list of prompts is in [submission/AI_PROMPTS_LOG.txt](submission/AI_PROMPTS_LOG.txt).
+
+## Run it locally
+
+To run the game on your own computer instead:
 
 ```bash
 npm install
@@ -138,6 +153,11 @@ Copy `.env.example` to `.env` to override:
 
 - `VITE_API_BASE_URL`: the base URL for a future Node/Express backend (used by `apiClient`).
 - `VITE_DONKI_BASE_URL`: an alternative DONKI endpoint.
+
+## Deployment
+
+The live game is hosted on **Vercel** at https://nasa-hackathon-26.vercel.app (build command `npm run build`, output folder `dist`).
+`vercel.json` sends every page address to the app, so pages like `/moon` or `/outpost/apollo-13` also load when opened directly or refreshed.
 
 ## History notes
 
