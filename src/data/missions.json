@@ -10,7 +10,7 @@
     "briefing": [
       "56 hours after launch, Oxygen Tank 2 ruptured and the Service Module lost most of its power and oxygen.",
       "In this simulation, you fly through a meteoroid storm and crash-land near the lunar surface.",
-      "Keep your crew alive for 6 Sols and push Science to 100% to rewrite history!"
+      "Survive the Unexpected Events and push Mission Progress to 100% to rewrite history!"
     ],
     "cockpit": {
       "hazard": "meteoroid",
@@ -47,7 +47,7 @@
       "rewrite": [
         "You dodged the meteoroid storm and kept your hull strong.",
         "You read real NASA DONKI space weather alerts and raised shields at the right moments.",
-        "You balanced oxygen, power and food for 6 Sols on the lunar surface.",
+        "You shared just 10 power units between 5 rooms and solved every emergency.",
         "You completed 100% of the planned Moon science — the landing Apollo 13 never got to make!"
       ]
     },
@@ -74,7 +74,7 @@
     "briefing": [
       "On December 3, 1999 the Mars Polar Lander went silent just before touching down near the Martian south pole.",
       "In this simulation, you steer through blasts of solar flare plasma and survive a rough landing.",
-      "Keep your outpost alive for 6 Sols and push Science to 100% to rewrite history!"
+      "Survive the Unexpected Events and push Mission Progress to 100% to rewrite history!"
     ],
     "cockpit": {
       "hazard": "flare",
@@ -111,7 +111,7 @@
       "rewrite": [
         "You flew through the solar flare plasma and protected the lander's hull.",
         "You used real NASA DONKI flare, CME and particle-storm alerts to time your shields.",
-        "You kept the crew breathing, fed and powered for 6 Sols on Mars.",
+        "You shared just 10 power units between 5 rooms and solved every Martian emergency.",
         "You finished 100% of the polar science — the discoveries Mars Polar Lander never got to send home!"
       ]
     },

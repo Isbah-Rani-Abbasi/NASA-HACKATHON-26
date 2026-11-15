@@ -1,171 +1,252 @@
 /**
- * Pure game rules for the 6-Sol outpost survival loop.
+ * Pure game rules for the 5-room habitat survival loop.
  * Kept free of React so it can later move to the Express backend unchanged.
+ *
+ * Power model: a strict 10-unit zero-sum grid. Each room holds 0–5 cells.
+ * Every Sol a mission-specific Unexpected Event demands a trade-off: boost one
+ * room to its target and cut others. Correct calls advance Mission Progress;
+ * wrong calls trigger consequences (but the player can always execute).
  */
 
-export const TOTAL_SOLS = 6
-export const MAX_ALLOCATION = 5
+export const TOTAL_UNITS = 10
+export const MAX_CELLS = 5
+export const MAX_SOLS = 8
+export const DECISION_SECONDS = 5
 
-/** Subsystems in strict priority order: Tier 5 (highest) → Tier 1 (lowest). */
-export const SUBSYSTEMS = [
+/** Rooms in strict priority order: Tier 5 (highest) → Tier 1 (lowest). */
+export const ROOMS = [
   {
     key: 'lifeSupport',
     tier: 5,
     priority: 'CRITICAL',
-    label: 'Life Support',
-    sub: 'O₂ & Water',
+    label: 'Life Support Bay',
+    short: 'Life Support',
+    sub: 'O₂ & Cabin Temp',
     color: '#00F0FF',
     tip: 'Never let this hit 0%, or the mission fails!',
-    effect: '+6% per point · uses 12% each Sol',
   },
   {
     key: 'shielding',
     tier: 4,
     priority: 'HIGH',
-    label: 'Radiation Shielding',
-    sub: 'Storm Dome',
+    label: 'Radiation Shield Dome',
+    short: 'Shield Dome',
+    sub: 'Forcefield',
     color: '#8B7CFF',
     tip: 'Boost this when NASA DONKI detects a Solar Flare!',
-    effect: '+8% per point · storms wear it down',
   },
   {
     key: 'power',
     tier: 3,
     priority: 'MEDIUM-HIGH',
-    label: 'Power Generation',
-    sub: 'Solar Arrays',
+    label: 'Solar & Reactor Bay',
+    short: 'Reactor',
+    sub: 'Power Cables',
     color: '#FFB800',
-    tip: 'Produces the energy points you distribute each day.',
-    effect: '+6% per point · more Power = more points',
+    tip: 'Keeps your 10 power units flowing. Neglect it and you get a brownout!',
   },
   {
     key: 'food',
     tier: 2,
     priority: 'MEDIUM',
-    label: 'Food Production',
-    sub: 'Greenhouse',
-    color: '#00E676',
+    label: 'NASA OSDR Space Garden',
+    short: 'Space Garden',
+    sub: 'VEG-05 Grow-Lights',
+    color: '#FF5FD2',
     tip: 'Feeds your crew; you may need to dim grow-lights during storms.',
-    effect: '+7% per point · crew eats 9% each Sol',
   },
   {
     key: 'science',
     tier: 1,
     priority: 'WIN GOAL',
-    label: 'Science Ops',
-    sub: 'Experiments',
-    color: '#FF3B5C',
-    tip: 'Lowest survival priority, but reach 100% Science to rewrite history and win!',
-    effect: '+4% per point · +50% on calm Sols',
+    label: 'Earth Return Lab',
+    labelMars: 'Comms & Science Lab',
+    short: 'Return Lab',
+    shortMars: 'Science Lab',
+    sub: 'Trajectory Computer',
+    subMars: 'Ice Core Analysis',
+    color: '#00E676',
+    tip: 'Lowest survival priority, but reach 100% Mission Progress to rewrite history and win!',
   },
 ]
 
-const clamp = (v) => Math.max(0, Math.min(100, Math.round(v)))
+export const ROOM_KEYS = ROOMS.map((r) => r.key)
 
-export function hullBonus(hull) {
-  if (hull >= 80) return 2
-  if (hull >= 50) return 1
-  return 0
+export function roomText(room, sector) {
+  const mars = sector === 'mars'
+  return {
+    label: (mars && room.labelMars) || room.label,
+    short: (mars && room.shortMars) || room.short,
+    sub: (mars && room.subMars) || room.sub,
+  }
 }
 
-/** Power points the player may distribute this Sol. */
-export function powerBudget(powerLevel, hull) {
-  return 4 + Math.round(powerLevel / 15) + hullBonus(hull)
+const clamp = (v, min = 0, max = 100) => Math.max(min, Math.min(max, Math.round(v)))
+
+export const INITIAL_ALLOCATION = { lifeSupport: 2, shielding: 2, power: 2, food: 2, science: 2 }
+
+export function totalCells(allocation) {
+  return ROOM_KEYS.reduce((sum, k) => sum + (allocation[k] || 0), 0)
 }
 
-export const DEFAULT_ALLOCATION = { lifeSupport: 2, shielding: 1, power: 1, food: 1, science: 3 }
+/** Starting state. Better cockpit flying → healthier crew. */
+export function initialState(sector, hull = 70) {
+  return {
+    lifeSupport: 70,
+    shielding: 60,
+    power: 70,
+    food: 65,
+    science: 0,
+    crewHealth: clamp(70 + hull * 0.3),
+    dust: sector === 'mars' ? 10 : 0,
+    brownout: 0,
+  }
+}
 
-/** Trims an allocation to fit the budget, cutting lowest-priority tiers first. */
+/** Power units available this Sol (10 unless brownouts or Martian dust cut it). */
+export function availableUnits(state) {
+  const dustLoss = Math.floor((state.dust || 0) / 30)
+  return Math.max(6, TOTAL_UNITS - state.brownout - dustLoss)
+}
+
+/** Trims an allocation to fit the budget, cutting lowest-priority rooms first. */
 export function fitAllocation(allocation, budget) {
   const next = { ...allocation }
-  let used = Object.values(next).reduce((a, b) => a + b, 0)
-  for (const s of [...SUBSYSTEMS].reverse()) {
-    while (used > budget && next[s.key] > 0) {
-      next[s.key] -= 1
+  let used = totalCells(next)
+  for (const key of [...ROOM_KEYS].reverse()) {
+    while (used > budget && next[key] > 0) {
+      next[key] -= 1
       used -= 1
     }
   }
   return next
 }
 
-/**
- * Runs one Sol of the simulation.
- * @returns {{ state: object, report: {text:string, tone:'good'|'bad'|'info'}[], radiation:number, crewDamage:number }}
- */
-export function simulateSol(state, allocation, event) {
-  const calm = event.type === 'CALM'
-  const severity = event.severity ?? 1
-  const radiation = Math.round(calm ? 4 : severity * 10)
-  const report = []
-
-  const lifeSupport = state.lifeSupport - 12 + allocation.lifeSupport * 6
-
-  let shielding = state.shielding + allocation.shielding * 8 - 3
-  const blocked = Math.min(radiation, shielding * 0.4)
-  const crewDamage = Math.max(0, Math.round(radiation - blocked))
-  shielding -= calm ? 0 : severity * 4
-
-  const stormDrain = event.type === 'CME' ? severity * 2 : event.type === 'FLR' ? severity : 0
-  const power = state.power + allocation.power * 6 - 5 - stormDrain
-
-  const food = state.food - 9 + allocation.food * 7
-
-  const scienceGain = Math.round(allocation.science * 4 * (calm ? 1.5 : 1))
-  const science = state.science + scienceGain
-
-  let crewHealth = state.crewHealth - crewDamage
-  if (food <= 0) crewHealth -= 15
-  if (lifeSupport < 20) crewHealth -= 5
-  if (food > 40 && lifeSupport > 40 && crewDamage === 0) crewHealth += 4
-
-  if (calm) report.push({ text: `Quiet Sun! Science got a 50% bonus (+${scienceGain}%).`, tone: 'good' })
-  else if (crewDamage === 0) report.push({ text: `Shields blocked ALL ${radiation} radiation units. Awesome!`, tone: 'good' })
-  else report.push({ text: `Shields blocked ${Math.round(blocked)} of ${radiation} radiation — the crew took ${crewDamage} damage.`, tone: crewDamage > 10 ? 'bad' : 'info' })
-
-  if (lifeSupport < 25) report.push({ text: 'Oxygen is running low! Give Life Support more power.', tone: 'bad' })
-  if (food <= 15) report.push({ text: 'The greenhouse is almost empty — the crew is hungry!', tone: 'bad' })
-  if (stormDrain > 0) report.push({ text: `The storm drained ${Math.round(stormDrain)}% from your solar arrays.`, tone: 'info' })
-  if (!calm && scienceGain > 0) report.push({ text: `Science experiments advanced +${scienceGain}%.`, tone: 'good' })
-
-  return {
-    state: {
-      lifeSupport: clamp(lifeSupport),
-      shielding: clamp(shielding),
-      power: clamp(power),
-      food: clamp(food),
-      science: clamp(science),
-      crewHealth: clamp(crewHealth),
-    },
-    report,
-    radiation,
-    crewDamage,
+/** CRITICAL / LOW / OPTIMAL badge for a room. */
+export function roomStatus(key, cells, level, event) {
+  const needs = event?.boost.room === key ? event.boost.min : null
+  if (key === 'science') {
+    // The Lab's bar is Mission Progress, so judge it on power alone.
+    if (needs && cells < needs) return 'LOW'
+    return cells <= 1 ? 'LOW' : 'OPTIMAL'
   }
+  if (level <= 20 || (key === 'lifeSupport' && cells <= 1)) return 'CRITICAL'
+  if (needs && cells < needs) return 'LOW'
+  if (cells <= 1 || level <= 40) return 'LOW'
+  return 'OPTIMAL'
 }
 
-/** Decides whether the mission has ended. */
+export function isCorrectCall(allocation, event) {
+  return (allocation[event.boost.room] || 0) >= event.boost.min
+}
+
+/**
+ * Runs one Sol.
+ * @returns {{ state, correct, deltas, consequences: string[], progressGain:number }}
+ */
+export function simulateSol(state, allocation, event, sector) {
+  const correct = isCorrectCall(allocation, event)
+  const room = event.boost.room
+  const a = allocation
+  const next = { ...state }
+  const consequences = []
+
+  // Baseline upkeep: 2 cells holds a room steady, each cell above/below moves it 6%.
+  next.lifeSupport += (a.lifeSupport - 2) * 6
+  next.shielding += (a.shielding - 2) * 6
+  next.power += (a.power - 2) * 6
+  next.food += (a.food - 2) * 6
+
+  // Mission progress: Lab cells always help a little; solving the crisis helps a lot.
+  let progressGain = a.science * 2 + (correct ? 14 : 0)
+  if (correct && room === 'science') progressGain += 6
+
+  if (correct) {
+    next[room] += 12
+    if (room === 'power') {
+      next.brownout = Math.max(0, next.brownout - 2)
+      next.dust = Math.max(0, next.dust - 45)
+    }
+  } else {
+    switch (room) {
+      case 'lifeSupport':
+        next.lifeSupport -= 25
+        next.crewHealth -= 10
+        consequences.push('Frost spread through the habitat: Life Support −25%, Crew Health −10%.')
+        break
+      case 'shielding':
+        next.shielding -= 20
+        next.crewHealth -= 18
+        consequences.push('Radiation leaked through the hull: Shield −20%, Crew Health −18%.')
+        break
+      case 'power':
+        next.power -= 20
+        next.brownout += 2
+        if (sector === 'mars') next.dust += 25
+        consequences.push('Brownout! Reactor −20% and only ' + availableUnits(next) + ' power units next Sol.')
+        break
+      case 'food':
+        next.food -= 25
+        next.crewHealth -= 8
+        consequences.push('Plants drooped and the crew went hungry: Garden −25%, Crew Health −8%.')
+        break
+      case 'science':
+        next.crewHealth -= 4
+        consequences.push('The window closed — this Sol only earned a small bit of Mission Progress.')
+        break
+      default:
+        break
+    }
+  }
+
+  // Mars dust slowly piles up on the solar arrays unless the Reactor clears it.
+  if (sector === 'mars') {
+    next.dust += a.power >= 4 ? -30 : 10
+  }
+  // A strong Reactor recovers from brownouts.
+  if (a.power >= 3) next.brownout = Math.max(0, next.brownout - 1)
+  if (next.power <= 15) next.brownout += 1
+
+  // Low systems hurt the crew.
+  if (next.shielding <= 0) next.crewHealth -= 6
+  if (next.food <= 0) next.crewHealth -= 10
+  if (next.lifeSupport <= 20) next.crewHealth -= 5
+  if (correct && next.food > 40 && next.lifeSupport > 40) next.crewHealth += 3
+
+  next.science = state.science + progressGain
+  for (const k of ['lifeSupport', 'shielding', 'power', 'food', 'science', 'crewHealth', 'dust']) next[k] = clamp(next[k])
+  next.brownout = clamp(next.brownout, 0, 4)
+
+  const deltas = {}
+  for (const k of [...ROOM_KEYS, 'crewHealth']) deltas[k] = next[k] - state[k]
+
+  return { state: next, correct, deltas, consequences, progressGain }
+}
+
+/** Decides whether the mission has ended after a Sol. */
 export function evaluateOutcome(state, sol) {
   if (state.lifeSupport <= 0) return { result: 'failure', cause: 'lifeSupport' }
   if (state.crewHealth <= 0) return { result: 'failure', cause: state.food <= 0 ? 'food' : 'crewHealth' }
   if (state.science >= 100) return { result: 'victory' }
-  if (sol >= TOTAL_SOLS) return { result: 'failure', cause: 'science' }
+  if (sol >= MAX_SOLS) return { result: 'failure', cause: 'science' }
   return null
 }
 
 export const FAILURE_INFO = {
   lifeSupport: {
     title: 'Life Support ran out!',
-    tip: 'Life Support is Tier 5 — the most important system. Try giving it at least 2 power points every Sol so it never drops to 0%.',
+    tip: 'Life Support is Tier 5 — the most important room. Keep at least 2 cells in it every Sol, and give it all 5 when oxygen or cold emergencies hit.',
   },
   crewHealth: {
-    title: 'Radiation hurt the crew!',
-    tip: 'When NASA DONKI warns about X-class flares, fast CMEs or particle storms (SEP), pour extra power into Radiation Shielding first.',
+    title: 'The crew got too sick to continue!',
+    tip: 'When NASA DONKI warns about solar flares or particle storms, boost the Shield Dome to 4 cells before you execute.',
   },
   food: {
     title: 'The crew ran out of food!',
-    tip: 'Keep at least one point in Food Production on most Sols so the greenhouse never goes empty.',
+    tip: 'The Space Garden needs light to grow food. Boost it to 4 cells when the crew gets hungry, and never leave it at 0 for long.',
   },
   science: {
-    title: 'Time ran out before Science hit 100%!',
-    tip: 'So close! Use calm "Quiet Sun" Sols for Science (+50% bonus), and keep Power strong so you get more points to spend.',
+    title: `Time ran out after ${MAX_SOLS} Sols!`,
+    tip: 'Each correct trade-off gives a big jump in Mission Progress. Read the event, boost the room it needs, and keep 1–2 cells in the Lab.',
   },
 }

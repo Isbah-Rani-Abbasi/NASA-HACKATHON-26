@@ -1,0 +1,56 @@
+{
+  "source": "NASA Open Science Data Repository (OSDR, https://osdr.nasa.gov) plant & human research, plus NASA mission reports",
+  "note": "Values marked \"game setting\" are simulation parameters chosen for this game; everything else is a published NASA fact.",
+  "veg05": {
+    "title": "VEG-05 · Veggie Space Garden (ISS)",
+    "experiment": "VEG-05 — Pick-and-Eat salad-crop experiment",
+    "facility": "Veggie plant growth unit, International Space Station",
+    "metrics": [
+      { "label": "Grow-light spectrum", "value": "Red + Blue LEDs", "note": "Red and blue light is what leaves use most for photosynthesis — that's why Veggie glows pink/purple." },
+      { "label": "Light intensity", "value": "400 µmol/m²/s", "note": "Photon flux used for the outpost garden (game setting)." },
+      { "label": "VEG-05 crop", "value": "Dwarf tomato 'Red Robin'", "note": "Picked because it stays small and gives fresh fruit." },
+      { "label": "First space salad", "value": "Aug 10, 2015", "note": "Astronauts ate red romaine lettuce grown in Veggie (VEG-01)." }
+    ],
+    "why": "Fresh plants give astronauts vitamins that packaged food slowly loses — and caring for a garden helps the crew feel happy far from home."
+  },
+  "nutrition": {
+    "title": "Crew Nutrition & Morale",
+    "experiment": "NASA human spaceflight nutrition research",
+    "metrics": [
+      { "label": "Daily energy need", "value": "≈ 2,500–3,200 kcal", "note": "Depends on the astronaut's size and how hard they work." },
+      { "label": "Apollo 13 water ration", "value": "≈ 6 oz (0.2 L) / person / day", "note": "The crew drank very little to save water for cooling the systems." },
+      { "label": "Apollo 13 weight loss", "value": "31.5 lb (14 kg) total", "note": "The three astronauts together lost this much in under 6 days." }
+    ],
+    "why": "Without enough food and water, astronauts get tired, cold and make more mistakes — food is part of mission safety!"
+  },
+  "co2": {
+    "title": "Cabin Air — Oxygen & CO₂",
+    "experiment": "NASA environmental control & life support (ECLSS)",
+    "metrics": [
+      { "label": "CO₂ in Earth air", "value": "≈ 0.04 %", "note": "Every breath out adds more CO₂ to a small, sealed cabin." },
+      { "label": "Apollo 13 fix", "value": "The 'mailbox' adapter", "note": "Built from duct tape, plastic bags, hoses and a flight-plan cover to fit square CO₂ filters into round holes." },
+      { "label": "Oxygen source", "value": "Tanks + scrubbers", "note": "Life support must add O₂ AND remove CO₂ at the same time." }
+    ],
+    "why": "People breathe out carbon dioxide. In a tiny spacecraft it builds up fast, so life support has to scrub it out all day, every day."
+  },
+  "thermal": {
+    "title": "Thermal Limits — Staying Warm",
+    "experiment": "NASA crew health & thermal control",
+    "metrics": [
+      { "label": "Comfortable cabin", "value": "≈ 18–27 °C", "note": "Roughly 65–80 °F, like a normal room." },
+      { "label": "Apollo 13 cabin", "value": "≈ 3 °C (38 °F)", "note": "After powering down, the Command Module got as cold as a refrigerator." },
+      { "label": "Mars polar night", "value": "−80 °C or colder", "note": "Martian poles get far colder than anywhere people live on Earth (game uses −80 °C)." }
+    ],
+    "why": "Electronics and heaters keep a spacecraft warm. Cut the power and the cold of space quickly creeps inside."
+  },
+  "radiation": {
+    "title": "Space Radiation Dose",
+    "experiment": "NASA radiation research (MSL RAD instrument)",
+    "metrics": [
+      { "label": "Mars surface dose", "value": "≈ 0.67 mSv / day", "note": "Measured by the Curiosity rover's RAD instrument." },
+      { "label": "Cruise to Mars", "value": "≈ 1.8 mSv / day", "note": "Measured inside Curiosity's spacecraft on the way to Mars." },
+      { "label": "Natural dose on Earth", "value": "≈ 2–3 mSv / year", "note": "Earth's magnetic field and thick air protect us." }
+    ],
+    "why": "Solar flares and particle storms shoot out tiny, super-fast particles. Shields and thick walls slow them down before they reach the crew."
+  }
+}

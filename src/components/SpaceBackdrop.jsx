@@ -227,13 +227,6 @@ export default function SpaceBackdrop({ variant = 'landing' }) {
       }
     }
 
-    function drawLanding() {
-      const m = Math.min(width, height)
-      drawPlanet(ctx, { x: width * 0.84, y: height * 0.98, r: m * 0.42, rotation: time * 0.05, type: 'earth', light: { x: -0.6, y: -0.6 } })
-      drawPlanet(ctx, { x: width * 0.66, y: height * 0.2, r: m * 0.065, rotation: time * 0.08, type: 'moon' })
-      drawPlanet(ctx, { x: width * 0.1, y: height * 0.22, r: m * 0.085, rotation: time * 0.12, type: 'mars' })
-    }
-
     function drawSectors() {
       const cx = width / 2
       const cy = height * 0.52
@@ -290,10 +283,6 @@ export default function SpaceBackdrop({ variant = 'landing' }) {
     }
 
     function drawMoonScene(dt) {
-      const m = Math.min(width, height)
-      const rise = Math.min(1, time / 25)
-      const ey = height * (0.62 - rise * 0.38)
-      drawPlanet(ctx, { x: width * 0.78, y: ey, r: m * 0.11, rotation: time * 0.06, type: 'earth', light: { x: -0.7, y: -0.2 } })
       fillRidge(ctx, ridges[0].pts, height, ridges[0].fill)
       fillRidge(ctx, ridges[1].pts, height, ridges[1].fill)
       const ground = ctx.createLinearGradient(0, height * 0.88, 0, height)
@@ -383,7 +372,6 @@ export default function SpaceBackdrop({ variant = 'landing' }) {
       drawNebulae(dt)
       drawStars(dt)
 
-      if (variant === 'landing') drawLanding()
       if (variant === 'sectors') drawSectors()
       if (variant === 'moon') drawMoonScene(dt)
       if (variant === 'mars') drawMarsScene(dt)

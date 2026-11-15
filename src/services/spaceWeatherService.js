@@ -58,6 +58,9 @@ function normalizeFlare(f, source) {
     typeLabel: 'Solar Flare',
     headline: `${letter}-CLASS SOLAR FLARE · ${cls}`,
     metric: cls,
+    classType: cls,
+    sourceLocation: f.sourceLocation,
+    activeRegion: f.activeRegionNum,
     time: f.peakTime || f.beginTime,
     timeLabel: formatTime(f.peakTime || f.beginTime),
     detail: `Peak ${formatTime(f.peakTime || f.beginTime)} · Active Region ${f.activeRegionNum ?? 'n/a'} · ${f.sourceLocation || 'unknown location'}`,
@@ -79,6 +82,8 @@ function normalizeCme(c, source) {
     typeLabel: 'Coronal Mass Ejection',
     headline: `CME PLASMA CLOUD · ${speed.toLocaleString('en-US')} km/s`,
     metric: `${speed} km/s`,
+    speed,
+    sourceLocation: c.sourceLocation,
     time: c.startTime,
     timeLabel: formatTime(c.startTime),
     detail: `Launched ${formatTime(c.startTime)} · Speed ${speed} km/s · ${c.sourceLocation || 'source unknown'}`,
@@ -97,6 +102,7 @@ function normalizeSep(s, source) {
     typeLabel: 'Solar Energetic Particles',
     headline: 'SOLAR PARTICLE STORM · SEP',
     metric: 'SEP',
+    instrument,
     time: s.eventTime,
     timeLabel: formatTime(s.eventTime),
     detail: `Detected ${formatTime(s.eventTime)} by ${instrument}`,
@@ -161,6 +167,27 @@ export async function getHeadlineFlare() {
   const { events, archive } = await getSpaceWeatherEvents()
   const flares = [...(events.FLR || []), ...(archive?.FLR || [])]
   return flares.reduce((best, f) => (!best || f.severity > best.severity ? f : best), null)
+}
+
+/**
+ * Picks a real DONKI record of the given type to drive one outpost event.
+ * `preferClass` (e.g. "X2.2") picks that exact flare when it exists.
+ * `exclude` is a set of record ids already used this mission.
+ */
+export async function getDonkiForEvent(type, { preferClass, exclude } = {}) {
+  const { events, archive, source } = await getSpaceWeatherEvents()
+  const live = source === 'live' ? events[type] || [] : []
+  const stored = archive?.[type] || []
+  const all = [...live, ...stored]
+  if (preferClass) {
+    const exact = all.find((e) => e.classType === preferClass)
+    if (exact) return exact
+  }
+  // Prefer live records; fall back to the May 2024 archive when the live feed runs dry.
+  const unused = (list) => list.filter((e) => !exclude?.has(e.id))
+  const pool = [unused(live), unused(stored), all].find((list) => list.length) || []
+  const strongest = [...pool].sort((a, b) => b.severity - a.severity).slice(0, 6)
+  return strongest[Math.floor(Math.random() * strongest.length)] || null
 }
 
 const shuffle = (arr) => {

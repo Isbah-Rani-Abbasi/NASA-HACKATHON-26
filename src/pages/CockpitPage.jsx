@@ -38,9 +38,10 @@ function CockpitGame({ mission }) {
   const isMars = mission.cockpit.hazard === 'flare'
   const canvasRef = useRef(null)
   const wrapRef = useRef(null)
+  const shakeRef = useRef(null)
   const phaseRef = useRef('ready')
   const [phase, setPhase] = useState('ready')
-  const [hud, setHud] = useState({ time: 0, hull: 100, dodged: 0, hits: 0, blips: [], cam: { x: 0, y: 0 } })
+  const [hud, setHud] = useState({ time: 0, hull: 100, dodged: 0, hits: 0, blips: [], cam: { x: 0, y: 0 }, vx: 0 })
   const [flareLabel, setFlareLabel] = useState(null)
 
   const game = useRef({
@@ -242,7 +243,7 @@ function CockpitGame({ mission }) {
             g.hits += 1
             g.hitFlash = 1
             sfx.hit()
-            const el = wrapRef.current
+            const el = shakeRef.current
             if (el) {
               el.classList.remove('animate-shake-once')
               void el.offsetWidth
@@ -533,6 +534,7 @@ function CockpitGame({ mission }) {
           dodged: g.dodged,
           hits: g.hits,
           cam: { x: g.cam.x, y: g.cam.y },
+          vx: g.cam.vx,
           blips: g.hazards.map((h) => ({ x: h.x - g.cam.x, z: h.z })),
         })
       }
@@ -573,11 +575,14 @@ function CockpitGame({ mission }) {
   const timeLeft = Math.max(0, GAME_SECONDS - hud.time)
   const hullColor = hud.hull > 66 ? '#00E676' : hud.hull > 33 ? '#FFB800' : '#FF3B5C'
   const accent = isMars ? '#FFB800' : '#00F0FF'
+  const tilt = clamp(-(hud.vx || 0) * 2.4, -3.5, 3.5)
+  const warning = phase === 'overload' || phase === 'explosion'
 
   return (
     <main
       className={`fixed inset-0 flex flex-col overflow-hidden bg-cosmic pt-14 ${phase === 'explosion' ? 'animate-shake' : ''}`}
     >
+      <div ref={shakeRef} className="flex flex-1 flex-col">
       <div
         className="relative flex-1"
         ref={wrapRef}
@@ -588,12 +593,17 @@ function CockpitGame({ mission }) {
         style={{ touchAction: 'none' }}
       >
         <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" aria-label={`${mission.cockpit.hazardLabel} dodge game`} />
-        <CockpitFrame warning={phase === 'overload' || phase === 'explosion'} />
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{ transform: `scale(1.07) rotate(${tilt}deg)`, transition: 'transform 0.18s ease-out' }}
+        >
+          <CockpitFrame warning={warning} />
+        </div>
 
         {/* Top HUD */}
         {(phase === 'playing' || phase === 'overload') && (
-          <div className="pointer-events-none absolute top-4 left-1/2 flex -translate-x-1/2 flex-col items-center gap-1">
-            <span className="font-display text-[10px] font-bold tracking-[0.3em]" style={{ color: accent }}>
+          <div className="pointer-events-none absolute top-[15%] left-1/2 flex -translate-x-1/2 flex-col items-center gap-1">
+            <span className="pixel-heading text-[10px] sm:text-xs" style={{ color: accent, textShadow: `0 0 10px ${accent}` }}>
               {mission.cockpit.hazardLabel}
             </span>
             <span className="font-display text-3xl font-black text-white tabular-nums">{timeLeft.toFixed(1)}s</span>
@@ -611,7 +621,7 @@ function CockpitGame({ mission }) {
               exit={{ opacity: 0 }}
               className="pointer-events-none absolute inset-x-0 top-1/3 flex justify-center px-4"
             >
-              <div className="flex animate-warning items-center gap-3 rounded-2xl border-4 border-crimson bg-crimson/25 px-6 py-4 font-display text-xl font-black tracking-widest text-white glow-text-crimson sm:text-4xl">
+              <div className="flex animate-warning items-center gap-3 rounded-2xl border-4 border-crimson bg-crimson/25 px-6 py-4 pixel-heading text-sm text-white glow-text-crimson sm:text-2xl">
                 <AlertTriangle className="shrink-0 text-crimson" size={40} /> WARNING: MAIN ENGINE OVERLOAD!
               </div>
             </motion.div>
@@ -643,7 +653,7 @@ function CockpitGame({ mission }) {
                 <p className="font-display text-xs font-bold tracking-[0.3em]" style={{ color: accent }}>
                   STAGE 1 · COCKPIT
                 </p>
-                <h1 className="mt-2 font-display text-2xl font-black text-white sm:text-3xl">{mission.name}</h1>
+                <h1 className="mt-3 pixel-heading text-lg text-white sm:text-2xl">{mission.name}</h1>
                 <p className="mt-3 text-slate-200">{mission.cockpit.instructions}</p>
                 <div className="mt-5 grid grid-cols-2 gap-3 text-left text-sm">
                   <div className="rounded-2xl bg-white/5 p-3">
@@ -675,108 +685,216 @@ function CockpitGame({ mission }) {
         </AnimatePresence>
       </div>
 
-      <Dashboard hud={hud} hullColor={hullColor} accent={accent} timeLeft={timeLeft} warning={phase === 'overload' || phase === 'explosion'} />
+      <Dashboard hud={hud} hullColor={hullColor} accent={accent} timeLeft={timeLeft} warning={warning} tilt={tilt} />
+      </div>
     </main>
   )
 }
 
-/** Metallic windshield frame drawn over the canvas. */
+/** Sci-fi cockpit interior: angled window, overhead switch panel, side struts and console lip. */
 function CockpitFrame({ warning }) {
+  const trim = warning ? '#FF3B5C' : '#00F0FF'
+  const windowPath = 'M150 86 L850 86 L962 330 L905 548 L95 548 L38 330 Z'
   return (
-    <svg className="pointer-events-none absolute inset-0 h-full w-full" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true">
+    <svg className="absolute inset-0 h-full w-full" viewBox="0 0 1000 600" preserveAspectRatio="none" aria-hidden="true">
       <defs>
-        <linearGradient id="metal" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#3b4458" />
-          <stop offset="50%" stopColor="#1c2233" />
+        <linearGradient id="ck-metal" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#4b5568" />
+          <stop offset="45%" stopColor="#1f2637" />
           <stop offset="100%" stopColor="#0b0f1a" />
         </linearGradient>
-        <linearGradient id="glass" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="rgba(0,240,255,0.06)" />
-          <stop offset="100%" stopColor="rgba(0,240,255,0)" />
+        <linearGradient id="ck-panel" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#2b3346" />
+          <stop offset="100%" stopColor="#141a28" />
         </linearGradient>
+        <linearGradient id="ck-glass" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="rgba(0,240,255,0.08)" />
+          <stop offset="40%" stopColor="rgba(0,240,255,0)" />
+          <stop offset="100%" stopColor="rgba(255,255,255,0.03)" />
+        </linearGradient>
+        <filter id="ck-glow" x="-10%" y="-10%" width="120%" height="120%">
+          <feGaussianBlur stdDeviation="3" />
+        </filter>
       </defs>
-      <path
-        fillRule="evenodd"
-        fill="url(#metal)"
-        d="M0 0 H1000 V600 H0 Z M120 40 L880 40 L975 300 L930 600 L70 600 L25 300 Z"
-      />
-      <path d="M120 40 L880 40 L975 300 L930 600 L70 600 L25 300 Z" fill="url(#glass)" />
-      <path d="M120 40 L880 40 L975 300 L930 600 L70 600 L25 300 Z" fill="none" stroke={warning ? '#FF3B5C' : '#00F0FF'} strokeOpacity="0.55" strokeWidth="3" />
-      <path d="M500 40 L500 92" stroke="url(#metal)" strokeWidth="18" />
-      <path d="M120 40 L60 0 M880 40 L940 0 M25 300 L0 300 M975 300 L1000 300" stroke="#4b5563" strokeWidth="6" />
-      {[150, 300, 700, 850].map((x) => (
-        <circle key={x} cx={x} cy="22" r="5" fill="#64748b" />
+
+      {/* Hull around the window */}
+      <path fillRule="evenodd" fill="url(#ck-metal)" d={`M0 0 H1000 V600 H0 Z ${windowPath}`} />
+      <path d={windowPath} fill="url(#ck-glass)" />
+      <path d="M190 110 L330 110" stroke="rgba(255,255,255,0.14)" strokeWidth="5" strokeLinecap="round" />
+      <path d="M880 140 L930 280" stroke="rgba(255,255,255,0.08)" strokeWidth="4" strokeLinecap="round" />
+
+      {/* Glowing trim */}
+      <path d={windowPath} fill="none" stroke={trim} strokeWidth="7" opacity="0.45" filter="url(#ck-glow)" />
+      <path d={windowPath} fill="none" stroke={trim} strokeWidth="2.5" opacity="0.9" />
+
+      {/* Overhead tactical switch panel */}
+      <path d="M120 0 H880 L850 70 H150 Z" fill="url(#ck-panel)" stroke="#475569" strokeWidth="2" />
+      <path d="M150 70 H850" stroke={trim} strokeWidth="2" opacity="0.7" />
+      {Array.from({ length: 14 }, (_, i) => {
+        const x = 196 + i * 44
+        const up = i % 3 !== 1
+        return (
+          <g key={i}>
+            <rect x={x - 9} y="16" width="18" height="30" rx="3" fill="#0b0f1a" stroke="#64748b" strokeWidth="1.5" />
+            <rect x={x - 3} y={up ? 18 : 30} width="6" height="14" rx="2" fill="#e2e8f0" />
+            <circle cx={x} cy="58" r="4" fill={['#00E676', '#FFB800', '#FF3B5C', '#00F0FF'][i % 4]}>
+              <animate attributeName="opacity" values="1;0.25;1" dur={`${0.8 + (i % 5) * 0.35}s`} repeatCount="indefinite" />
+            </circle>
+          </g>
+        )
+      })}
+
+      {/* Center overhead strut */}
+      <path d="M484 70 L516 70 L508 118 L492 118 Z" fill="url(#ck-metal)" stroke="#475569" strokeWidth="1.5" />
+
+      {/* Side structural struts with bolts and LED strips */}
+      {[
+        { d: 'M0 70 L150 86 L38 330 L95 548 L0 600 Z', x: 40, flip: false },
+        { d: 'M1000 70 L850 86 L962 330 L905 548 L1000 600 Z', x: 960, flip: true },
+      ].map(({ d, x, flip }) => (
+        <g key={x}>
+          <path d={d} fill="url(#ck-panel)" stroke="#475569" strokeWidth="2" />
+          {[150, 250, 400, 480].map((y) => (
+            <circle key={y} cx={flip ? x - 2 : x + 2} cy={y} r="6" fill="#64748b" stroke="#1e293b" strokeWidth="2" />
+          ))}
+          {Array.from({ length: 6 }, (_, i) => (
+            <rect key={i} x={flip ? x - 22 : x + 14} y={290 + i * 12} width="10" height="6" rx="1.5" fill={trim}>
+              <animate attributeName="opacity" values="0.2;1;0.2" dur="1.6s" begin={`${i * 0.2}s`} repeatCount="indefinite" />
+            </rect>
+          ))}
+        </g>
       ))}
-      <path d="M140 60 L260 60" stroke="rgba(255,255,255,0.12)" strokeWidth="4" strokeLinecap="round" />
+
+      {/* Console lip at the bottom of the window */}
+      <path d="M0 600 L0 560 L95 548 L905 548 L1000 560 L1000 600 Z" fill="url(#ck-panel)" stroke="#475569" strokeWidth="2" />
+      <path d="M95 548 L905 548" stroke={trim} strokeWidth="3" opacity="0.8" />
     </svg>
   )
 }
 
-/** Glowing dashboard with hull gauge, radar and mission timer. */
-function Dashboard({ hud, hullColor, accent, timeLeft, warning }) {
+/** Pilot dashboard console: LEDs, throttle levers, hull gauge, radar housing, telemetry screens, storm crossing. */
+function Dashboard({ hud, hullColor, accent, timeLeft, warning, tilt }) {
   const circumference = 2 * Math.PI * 36
+  const throttle = clamp(0.35 + Math.abs(hud.vx || 0) * 0.35, 0.2, 1)
+  const speed = Math.round(18 + Math.abs(hud.vx || 0) * 40 + hud.time * 0.6)
   return (
-    <div className="relative z-10 grid grid-cols-3 items-center gap-2 border-t-2 border-slate-700 bg-gradient-to-b from-slate-800 to-slate-950 px-3 py-3 sm:gap-6 sm:px-8">
-      <div className="flex items-center gap-3">
-        <svg width="84" height="84" viewBox="0 0 84 84" className="shrink-0">
-          <circle cx="42" cy="42" r="36" stroke="rgba(255,255,255,0.1)" strokeWidth="8" fill="none" />
-          <circle
-            cx="42"
-            cy="42"
-            r="36"
-            stroke={hullColor}
-            strokeWidth="8"
-            fill="none"
-            strokeLinecap="round"
-            strokeDasharray={circumference}
-            strokeDashoffset={circumference * (1 - hud.hull / 100)}
-            transform="rotate(-90 42 42)"
-            style={{ transition: 'stroke-dashoffset 0.3s, stroke 0.3s', filter: `drop-shadow(0 0 6px ${hullColor})` }}
-          />
-          <text x="42" y="47" textAnchor="middle" className="font-display" fill="white" fontSize="16" fontWeight="800">
-            {Math.round(hud.hull)}%
-          </text>
-        </svg>
-        <div className="hidden sm:block">
-          <p className="font-display text-[10px] font-bold tracking-widest text-slate-400">HULL INTEGRITY</p>
-          <p className="text-sm text-slate-200">
-            <span className="text-bio">✓ {hud.dodged} dodged</span> · <span className="text-crimson">✕ {hud.hits} hits</span>
+    <div
+      className="relative z-10 border-t-2 border-cyan-glow/40 bg-[linear-gradient(180deg,#273044_0%,#151b29_45%,#090d16_100%)] px-3 py-3 shadow-[0_-10px_30px_rgba(0,0,0,0.6)] sm:px-6"
+      style={{ transform: `rotate(${tilt * 0.35}deg)`, transition: 'transform 0.18s ease-out' }}
+    >
+      <div className="absolute inset-x-0 top-0 h-px bg-cyan-glow/70 shadow-[0_0_10px_#00F0FF]" />
+      <div className="grid grid-cols-3 items-center gap-2 md:grid-cols-[auto_1fr_auto_1fr_1fr] md:gap-5">
+        {/* LEDs + throttle levers */}
+        <div className="hidden items-center gap-3 md:flex">
+          <div className="grid grid-cols-2 gap-1.5 rounded-lg border border-slate-600 bg-slate-950 p-2">
+            {Array.from({ length: 8 }, (_, i) => (
+              <span
+                key={i}
+                className="h-2.5 w-2.5 animate-pulse rounded-full"
+                style={{
+                  background: warning ? '#FF3B5C' : ['#00E676', '#00F0FF', '#FFB800', '#00E676'][i % 4],
+                  boxShadow: `0 0 6px ${warning ? '#FF3B5C' : '#00E676'}`,
+                  animationDuration: `${0.6 + (i % 4) * 0.4}s`,
+                }}
+              />
+            ))}
+          </div>
+          <svg width="64" height="78" viewBox="0 0 64 78" aria-label="Throttle levers">
+            {[16, 46].map((x, i) => {
+              const y = 66 - throttle * 50 - i * 4
+              return (
+                <g key={x}>
+                  <rect x={x - 4} y="10" width="8" height="60" rx="4" fill="#0b0f1a" stroke="#475569" />
+                  <line x1={x} y1="70" x2={x} y2={y} stroke="#94a3b8" strokeWidth="3" style={{ transition: 'all 0.2s' }} />
+                  <rect x={x - 10} y={y - 7} width="20" height="12" rx="4" fill={i ? '#FF3B5C' : '#FFB800'} stroke="#1e293b" strokeWidth="2" style={{ transition: 'all 0.2s' }} />
+                </g>
+              )
+            })}
+          </svg>
+        </div>
+
+        {/* Hull gauge */}
+        <div className="flex items-center gap-3">
+          <svg width="84" height="84" viewBox="0 0 84 84" className="shrink-0">
+            <circle cx="42" cy="42" r="40" fill="#0b0f1a" stroke="#475569" strokeWidth="2" />
+            <circle cx="42" cy="42" r="36" stroke="rgba(255,255,255,0.1)" strokeWidth="8" fill="none" />
+            <circle
+              cx="42"
+              cy="42"
+              r="36"
+              stroke={hullColor}
+              strokeWidth="8"
+              fill="none"
+              strokeLinecap="round"
+              strokeDasharray={circumference}
+              strokeDashoffset={circumference * (1 - hud.hull / 100)}
+              transform="rotate(-90 42 42)"
+              style={{ transition: 'stroke-dashoffset 0.3s, stroke 0.3s', filter: `drop-shadow(0 0 6px ${hullColor})` }}
+            />
+            <text x="42" y="47" textAnchor="middle" fill="white" fontSize="16" fontWeight="800" fontFamily="Orbitron, sans-serif">
+              {Math.round(hud.hull)}%
+            </text>
+          </svg>
+          <div className="hidden sm:block">
+            <p className="font-display text-[10px] font-bold tracking-widest text-slate-400">HULL INTEGRITY</p>
+            <p className="text-sm text-slate-200">
+              <span className="text-bio">✓ {hud.dodged} dodged</span> · <span className="text-crimson">✕ {hud.hits} hits</span>
+            </p>
+          </div>
+        </div>
+
+        {/* Radar in its housing */}
+        <div className="flex justify-center">
+          <div className="rounded-full border-4 border-slate-600 bg-gradient-to-b from-slate-700 to-slate-900 p-1.5 shadow-[inset_0_2px_6px_rgba(0,0,0,0.8)]">
+            <svg width="104" height="104" viewBox="-55 -55 110 110" aria-label="Radar">
+              <circle r="50" fill="#021014" stroke={warning ? '#FF3B5C' : '#00F0FF'} strokeOpacity="0.6" strokeWidth="2" />
+              <circle r="33" fill="none" stroke="#00F0FF" strokeOpacity="0.2" />
+              <circle r="16" fill="none" stroke="#00F0FF" strokeOpacity="0.2" />
+              <line x1="-50" y1="0" x2="50" y2="0" stroke="#00F0FF" strokeOpacity="0.15" />
+              <line x1="0" y1="-50" x2="0" y2="50" stroke="#00F0FF" strokeOpacity="0.15" />
+              <g className="origin-center animate-[spin_2s_linear_infinite]">
+                <path d="M0 0 L0 -50 A50 50 0 0 1 35 -35 Z" fill="#00F0FF" fillOpacity="0.18" />
+              </g>
+              {hud.blips.map((b, i) => {
+                const bx = clamp(b.x * 22, -46, 46)
+                const by = clamp(46 - (b.z / 3.2) * 92, -46, 46)
+                return <circle key={i} cx={bx} cy={-by} r="3" fill={accent === '#FFB800' ? '#FF3B5C' : '#FFB800'} />
+              })}
+              <polygon points="0,-6 5,5 -5,5" fill="#00E676" />
+            </svg>
+          </div>
+        </div>
+
+        {/* Digital telemetry screens */}
+        <div className="hidden grid-cols-2 gap-1.5 md:grid">
+          {[
+            ['VEL', `${speed} km/s`],
+            ['HAZ', `${hud.blips.length} TRK`],
+            ['POS X', (hud.cam?.x || 0).toFixed(2)],
+            ['POS Y', (-(hud.cam?.y || 0)).toFixed(2)],
+          ].map(([k, v]) => (
+            <div key={k} className="rounded-md border border-slate-600 bg-[#03140f] px-2 py-1 font-mono text-[11px] leading-tight shadow-[inset_0_0_8px_rgba(0,230,118,0.15)]">
+              <span className="block text-[9px] text-bio/60">{k}</span>
+              <span className={warning ? 'text-crimson' : 'text-bio'}>{v}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Storm crossing */}
+        <div className="flex flex-col items-end gap-2 text-right">
+          <p className="flex items-center gap-1 font-display text-[10px] font-bold tracking-widest text-slate-400">
+            <Gauge size={12} /> STORM CROSSING
+          </p>
+          <div className="h-3 w-full max-w-[200px] overflow-hidden rounded-full border border-slate-600 bg-slate-950">
+            <div
+              className="h-full rounded-full transition-all"
+              style={{ width: `${((GAME_SECONDS - timeLeft) / GAME_SECONDS) * 100}%`, background: accent, boxShadow: `0 0 10px ${accent}` }}
+            />
+          </div>
+          <p className={`font-display text-xs font-bold ${warning ? 'animate-warning text-crimson' : 'text-slate-300'}`}>
+            {warning ? 'ENGINE FAILURE' : 'ENGINES NOMINAL'}
           </p>
         </div>
-      </div>
-
-      <div className="flex justify-center">
-        <svg width="110" height="110" viewBox="-55 -55 110 110" aria-label="Radar">
-          <circle r="50" fill="#021014" stroke={warning ? '#FF3B5C' : '#00F0FF'} strokeOpacity="0.6" strokeWidth="2" />
-          <circle r="33" fill="none" stroke="#00F0FF" strokeOpacity="0.2" />
-          <circle r="16" fill="none" stroke="#00F0FF" strokeOpacity="0.2" />
-          <line x1="-50" y1="0" x2="50" y2="0" stroke="#00F0FF" strokeOpacity="0.15" />
-          <line x1="0" y1="-50" x2="0" y2="50" stroke="#00F0FF" strokeOpacity="0.15" />
-          <g className="origin-center animate-[spin_2s_linear_infinite]">
-            <path d="M0 0 L0 -50 A50 50 0 0 1 35 -35 Z" fill="#00F0FF" fillOpacity="0.18" />
-          </g>
-          {hud.blips.map((b, i) => {
-            const bx = clamp(b.x * 22, -46, 46)
-            const by = clamp(46 - (b.z / 3.2) * 92, -46, 46)
-            return <circle key={i} cx={bx} cy={-by} r="3" fill={accent === '#FFB800' ? '#FF3B5C' : '#FFB800'} />
-          })}
-          <polygon points="0,-6 5,5 -5,5" fill="#00E676" />
-        </svg>
-      </div>
-
-      <div className="flex flex-col items-end gap-2 text-right">
-        <p className="flex items-center gap-1 font-display text-[10px] font-bold tracking-widest text-slate-400">
-          <Gauge size={12} /> STORM CROSSING
-        </p>
-        <div className="h-3 w-full max-w-[200px] overflow-hidden rounded-full bg-white/10">
-          <div
-            className="h-full rounded-full transition-all"
-            style={{ width: `${((GAME_SECONDS - timeLeft) / GAME_SECONDS) * 100}%`, background: accent, boxShadow: `0 0 10px ${accent}` }}
-          />
-        </div>
-        <p className={`font-display text-xs font-bold ${warning ? 'animate-warning text-crimson' : 'text-slate-300'}`}>
-          {warning ? 'ENGINE FAILURE' : 'ENGINES NOMINAL'}
-        </p>
       </div>
     </div>
   )

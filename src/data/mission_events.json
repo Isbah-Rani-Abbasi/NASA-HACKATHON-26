@@ -1,0 +1,305 @@
+{
+  "apollo-13": [
+    {
+      "id": "o2-rupture",
+      "icon": "🧊",
+      "title": "Oxygen Tank #2 Rupture & Deep Freeze",
+      "boost": {
+        "room": "lifeSupport",
+        "min": 5
+      },
+      "cut": [
+        "shielding",
+        "science"
+      ],
+      "donki": "CME",
+      "osdr": [
+        "co2",
+        "thermal"
+      ],
+      "story": "BANG! Oxygen Tank #2 just ruptured. Oxygen is leaking and the cabin is freezing fast. The crew needs air and heat RIGHT NOW!",
+      "success": "Life Support at full power! Heaters melted the frost and the scrubbers pushed fresh oxygen back into the cabin.",
+      "fail": "Life Support didn't get enough power. Without heaters and oxygen flow, frost spread across the cabin and the crew got cold and short of breath. In an emergency, breathing always comes first!",
+      "hint": "Oxygen emergency! Boost LIFE SUPPORT all the way to 5 cells. Take power from the Shield Dome and the Lab — they can wait.",
+      "history": {
+        "when": "April 13, 1970 · 55 hours 54 minutes into the flight",
+        "text": "Oxygen Tank 2 exploded in the Service Module. The crew shut down the Command Module and moved into the Lunar Module 'Aquarius', using it as a lifeboat."
+      },
+      "alarm": {
+        "effect": "frost",
+        "text": "Oxygen pressure dropping — the cabin is freezing!"
+      },
+      "learn": "Your body uses oxygen to turn food into energy, and you breathe out carbon dioxide (CO₂). Life support adds fresh O₂, scrubs out CO₂, and runs heaters. Without heaters, the cold of space slowly soaks into the spacecraft."
+    },
+    {
+      "id": "solar-flare",
+      "icon": "☀️",
+      "title": "NASA DONKI {class} Solar Flare",
+      "boost": {
+        "room": "shielding",
+        "min": 4
+      },
+      "cut": [
+        "food",
+        "science"
+      ],
+      "donki": "FLR",
+      "preferClass": "X2.2",
+      "osdr": [
+        "radiation"
+      ],
+      "story": "NASA's DONKI network just detected a powerful {class} solar flare! A blast of radiation is racing toward your spacecraft.",
+      "success": "The forcefield dome glowed bright cyan and bounced the flare's rays away. The crew stayed safe inside!",
+      "fail": "The Shield Dome was underpowered, so radiation slipped through the hull. Radiation can damage the cells in your body — that's why astronauts hide behind thick shielding during flares.",
+      "hint": "Flare incoming! Boost the RADIATION SHIELD DOME to at least 4 cells. Dim the Space Garden and the Lab for now.",
+      "history": {
+        "when": "April 1970 · Solar Cycle 20",
+        "text": "Luckily, no big solar storm hit Apollo 13. But in August 1972 — between Apollo 16 and 17 — a huge solar particle storm erupted. Astronauts on the Moon that week could have been in danger."
+      },
+      "alarm": {
+        "effect": "flare",
+        "text": "Solar flare rays are racing toward the habitat!"
+      },
+      "learn": "A solar flare is a giant explosion on the Sun. Flares are graded C, M and X — each letter is 10 times stronger than the one before, so X-class is the strongest! On Earth, our air and magnetic field protect us. In space, shielding is the only protection."
+    },
+    {
+      "id": "lunar-shadow",
+      "icon": "🌑",
+      "title": "Lunar Eclipse Shadow",
+      "boost": {
+        "room": "power",
+        "min": 4
+      },
+      "cut": [
+        "science"
+      ],
+      "donki": "CME",
+      "osdr": [
+        "thermal"
+      ],
+      "story": "You're swinging behind the Moon into deep shadow. No sunlight means the batteries must carry everything!",
+      "success": "The Reactor Bay kept the power cables humming. Energy pulses kept every room running through the darkness.",
+      "fail": "Too little power went to the Reactor Bay, so the batteries drained and the habitat browned out. Next Sol you'll have fewer power units to share.",
+      "hint": "Darkness ahead! Boost the SOLAR & REACTOR BAY to 4 cells so your batteries survive the shadow.",
+      "history": {
+        "when": "April 14–15, 1970 · Far side of the Moon",
+        "text": "Apollo 13 looped around the far side of the Moon, reaching 400,171 km from Earth — still the farthest humans have ever travelled. Controllers cut the Lunar Module's power use to the bare minimum so the batteries would last."
+      },
+      "alarm": {
+        "effect": "shadow",
+        "text": "Sunlight lost — darkness is sweeping over you!"
+      },
+      "learn": "Solar panels only make electricity in sunlight. In shadow, batteries must power everything, so engineers keep the power system strong and save energy wherever they can."
+    },
+    {
+      "id": "calorie-drop",
+      "icon": "🥬",
+      "title": "OSDR Crew Calorie Drop",
+      "boost": {
+        "room": "food",
+        "min": 4
+      },
+      "cut": [
+        "shielding"
+      ],
+      "donki": "CME",
+      "osdr": [
+        "nutrition",
+        "veg05"
+      ],
+      "story": "The crew is cold, tired and hungry. NASA OSDR nutrition data says their energy is dropping — time to grow some fresh food!",
+      "success": "The pink-purple grow-lights switched on and the space lettuce sprouted. Fresh veggies gave the crew energy and a big smile!",
+      "fail": "The Space Garden stayed dark, so the plants drooped and the crew went hungry. Plants need light energy to make food through photosynthesis.",
+      "hint": "Hungry crew! Boost the SPACE GARDEN to 4 cells so the grow-lights turn on. The Shield Dome can rest — the Sun is calm.",
+      "history": {
+        "when": "April 1970 · Inside the cold Lunar Module",
+        "text": "The Apollo 13 crew ate little and drank only about 6 oz of water a day each. Together they lost 31.5 lb (14 kg) in under six days."
+      },
+      "alarm": {
+        "effect": "food",
+        "text": "Crew energy dropping — the food supply is low!"
+      },
+      "learn": "Food is fuel for your body! Plants make food from light by photosynthesis. NASA’s Veggie garden uses red and blue LEDs because those are the colours leaves absorb best."
+    },
+    {
+      "id": "tei-burn",
+      "icon": "🚀",
+      "title": "Trans-Earth Injection Burn",
+      "boost": {
+        "room": "science",
+        "min": 4
+      },
+      "cut": [
+        "food"
+      ],
+      "donki": "CME",
+      "osdr": [
+        "co2"
+      ],
+      "story": "It's time to fire the engine and aim for home! The Earth Return Lab must calculate the perfect burn.",
+      "success": "Perfect burn! The trajectory map lit up and your spacecraft is racing back toward Earth.",
+      "fail": "The Earth Return Lab didn't have enough power for its navigation computer, so the burn was off-target and you lost time. Precise maths keeps spacecraft on course!",
+      "hint": "Engine burn! Boost the EARTH RETURN LAB to 4 cells so the navigation computer can aim for Earth.",
+      "history": {
+        "when": "April 14, 1970 · 'PC+2' burn",
+        "text": "About two hours after swinging around the Moon, the crew fired the Lunar Module's descent engine to speed up the trip home. They later steered by hand using Earth's edge as a guide."
+      },
+      "alarm": {
+        "effect": "signal",
+        "text": "Engine burn window opening — navigation needed!"
+      },
+      "learn": "To come home, a spacecraft must fire its engine at exactly the right moment and in the right direction. A tiny aiming error near the Moon becomes a huge miss by the time you reach Earth."
+    }
+  ],
+  "mars-lander": [
+    {
+      "id": "dust-storm",
+      "icon": "🌪️",
+      "title": "Global Martian Dust Storm",
+      "boost": {
+        "room": "power",
+        "min": 4
+      },
+      "cut": [
+        "science"
+      ],
+      "donki": "CME",
+      "osdr": [
+        "thermal"
+      ],
+      "story": "A planet-wide dust storm is blotting out the Sun! Red dust is piling up on your solar arrays.",
+      "success": "The Reactor Bay powered the panel shakers and blew the red dust away. Your arrays are soaking up sunlight again!",
+      "fail": "The Reactor Bay was too weak to clear the dust, so the solar arrays got buried and made less electricity. Next Sol you'll have fewer power units.",
+      "hint": "Dust storm! Boost the SOLAR & REACTOR BAY to 4 cells to shake the dust off your solar arrays.",
+      "history": {
+        "when": "1999 plan · 2018 lesson",
+        "text": "Mars Polar Lander was designed to run on solar power. Years later, in 2018, a global dust storm blocked so much sunlight that NASA's solar-powered Opportunity rover ran out of power and fell silent."
+      },
+      "alarm": {
+        "effect": "dust",
+        "text": "Red dust is sweeping over the solar arrays!"
+      },
+      "learn": "Martian dust is super fine, like flour. During storms it blocks sunlight and settles on solar panels, so they make less electricity. Shaking or wind can clean them off."
+    },
+    {
+      "id": "sep-storm",
+      "icon": "☢️",
+      "title": "NASA DONKI SEP Particle Storm",
+      "boost": {
+        "room": "shielding",
+        "min": 4
+      },
+      "cut": [
+        "food",
+        "science"
+      ],
+      "donki": "SEP",
+      "osdr": [
+        "radiation"
+      ],
+      "story": "DONKI reports a Solar Energetic Particle storm! And because of the 14-minute comms delay, Earth can't warn you in time — you must decide alone!",
+      "success": "Shield Dome at full strength! The forcefield deflected the particle storm while you waited out the comms blackout.",
+      "fail": "The Shield Dome was underpowered, so energetic particles zipped through the walls. Mars has no global magnetic field and thin air, so the surface gets far more radiation than Earth.",
+      "hint": "Particle storm! Boost the RADIATION SHIELD DOME to 4 cells. Earth is 14 minutes away — trust your shields!",
+      "history": {
+        "when": "Measured 2012–today by Curiosity",
+        "text": "Mars Polar Lander carried no radiation detector. NASA's Curiosity rover later measured about 0.67 mSv per day on the Martian surface — and sudden jumps during solar particle storms."
+      },
+      "alarm": {
+        "effect": "flare",
+        "text": "Energetic particles are raining down from the Sun!"
+      },
+      "learn": "SEP stands for Solar Energetic Particles — tiny bits of atoms that the Sun flings out incredibly fast. Mars has no global magnetic field and very thin air, so shields matter even more there. Radio messages take minutes to reach Earth, so you can’t wait for help."
+    },
+    {
+      "id": "polar-night",
+      "icon": "🥶",
+      "title": "Polar Sub-Zero Night (−80 °C)",
+      "boost": {
+        "room": "lifeSupport",
+        "min": 5
+      },
+      "cut": [
+        "science",
+        "food"
+      ],
+      "donki": "CME",
+      "osdr": [
+        "thermal",
+        "co2"
+      ],
+      "story": "Night falls at the south pole and the temperature crashes to −80 °C! Frost is forming on the walls.",
+      "success": "Life Support heaters roared to full power. The frost melted and green oxygen bubbles filled the habitat!",
+      "fail": "Life Support was too weak for the polar cold. Frost crept across the habitat and the crew started shivering. Heat escapes fast when it's −80 °C outside!",
+      "hint": "Deep freeze! Boost LIFE SUPPORT all the way to 5 cells. Turn the Lab and Garden down until morning.",
+      "history": {
+        "when": "December 3, 1999 · Landing day",
+        "text": "Mars Polar Lander was aimed at 76° south, timed for southern spring so the Sun would stay up. It went silent during descent — most likely its engine shut off too early when the landing legs jolted open."
+      },
+      "alarm": {
+        "effect": "frost",
+        "text": "Temperature crashing to −80 °C — frost forming!"
+      },
+      "learn": "Mars has very thin air that can’t hold heat, so nights get extremely cold, especially at the poles. Heaters and insulation keep astronauts and electronics working."
+    },
+    {
+      "id": "nutrient-cycle",
+      "icon": "🌱",
+      "title": "OSDR Hydroponic Nutrient Cycle",
+      "boost": {
+        "room": "food",
+        "min": 4
+      },
+      "cut": [
+        "shielding"
+      ],
+      "donki": "CME",
+      "osdr": [
+        "veg05",
+        "nutrition"
+      ],
+      "story": "The hydroponic garden needs its nutrient cycle — water, minerals and lots of red + blue light, just like NASA's Veggie experiments!",
+      "success": "Grow-lights on! The space lettuce shot up and the crew had a fresh salad on Mars.",
+      "fail": "The garden didn't get enough light, so the plants drooped and stopped growing. No light means no photosynthesis — and no salad.",
+      "hint": "Garden time! Boost the SPACE GARDEN to 4 cells. The Sun is quiet, so the Shield Dome can take a break.",
+      "history": {
+        "when": "1999 → 2008",
+        "text": "Mars Polar Lander carried no plants, but its robotic arm was going to dig for water ice. NASA's Phoenix lander finally confirmed water ice in Martian soil in 2008 — a key ingredient for future Mars gardens."
+      },
+      "alarm": {
+        "effect": "food",
+        "text": "The garden’s nutrient cycle is starting — plants need light!"
+      },
+      "learn": "Hydroponics means growing plants without soil: the roots sit in water with minerals mixed in. Plants still need light for photosynthesis, so the grow-lights need power."
+    },
+    {
+      "id": "relay-uplink",
+      "icon": "📡",
+      "title": "Orbital Relay Uplink Window",
+      "boost": {
+        "room": "science",
+        "min": 4
+      },
+      "cut": [
+        "food"
+      ],
+      "donki": "CME",
+      "osdr": [
+        "co2"
+      ],
+      "story": "A relay satellite is passing overhead! You have a short window to send your polar ice core science home.",
+      "success": "Uplink locked! Your ice core data beamed across space and reached Earth 14 minutes later.",
+      "fail": "The Science Lab didn't have enough power for the transmitter, so the relay window closed before the data was sent.",
+      "hint": "Uplink window! Boost the SCIENCE LAB to 4 cells so the antenna can transmit your ice core results.",
+      "history": {
+        "when": "September 23, 1999",
+        "text": "Mars Climate Orbiter — meant to help relay Mars Polar Lander's data — was lost when one team used pound-force units and another used newtons. A tiny units mix-up ended a whole mission!"
+      },
+      "alarm": {
+        "effect": "signal",
+        "text": "Relay satellite overhead — the uplink window is open!"
+      },
+      "learn": "Orbiters circling Mars work like cell towers in space. A lander can only send data while the orbiter is overhead, so it must be ready to transmit during that short window."
+    }
+  ]
+}
