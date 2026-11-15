@@ -68,6 +68,26 @@ export default function OutpostPage() {
   return <OutpostGame key={missionId} mission={mission} />
 }
 
+/**
+ * Random event order for one playthrough: every event appears once per round
+ * (shuffled), and the same event never appears twice in a row across rounds.
+ */
+function buildEventSequence(count, length = 16) {
+  const seq = []
+  while (seq.length < length) {
+    const round = Array.from({ length: count }, (_, i) => i)
+    for (let i = round.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[round[i], round[j]] = [round[j], round[i]]
+    }
+    if (seq.length && round[0] === seq[seq.length - 1] && count > 1) {
+      ;[round[0], round[1]] = [round[1], round[0]]
+    }
+    seq.push(...round)
+  }
+  return seq
+}
+
 function readCockpitResult(missionId, routerState) {
   if (routerState && typeof routerState.hull === 'number') return routerState
   try {
@@ -84,6 +104,7 @@ function OutpostGame({ mission }) {
   const navigate = useNavigate()
   const sector = mission.sector
   const eventDefs = missionEvents[mission.id]
+  const [sequence, setSequence] = useState(() => buildEventSequence(eventDefs.length))
   const cockpit = useMemo(() => readCockpitResult(mission.id, location.state), [mission.id, location.state])
 
   const [levels, setLevels] = useState(() => initialState(sector, cockpit.hull))
@@ -91,8 +112,8 @@ function OutpostGame({ mission }) {
   const [sol, setSol] = useState(1)
   const [cursor, setCursor] = useState(0)
   const [event, setEvent] = useState(null)
-  // Astro-Bot only appears when the player taps "Ask Astro-Bot".
-  const [phase, setPhase] = useState('planning') // alert | planning | animating | result | victory | failure
+  // Astro-Bot explains the goal once on landing (skippable); after that it only appears when asked.
+  const [phase, setPhase] = useState('intro') // intro | alert | planning | animating | result | victory | failure
   const [resolution, setResolution] = useState(null)
   const [result, setResult] = useState(null)
   const [outcome, setOutcome] = useState(null)
@@ -119,7 +140,7 @@ function OutpostGame({ mission }) {
   // Load the Unexpected Event (with a real DONKI record) for the current cursor.
   useEffect(() => {
     let alive = true
-    const def = eventDefs[cursor % eventDefs.length]
+    const def = eventDefs[sequence[cursor % sequence.length]]
     setEvent(null)
     getDonkiForEvent(def.donki, { preferClass: cursor < eventDefs.length ? def.preferClass : undefined, exclude: usedDonki.current }).then(
       (record) => {
@@ -139,7 +160,7 @@ function OutpostGame({ mission }) {
     return () => {
       alive = false
     }
-  }, [cursor, eventDefs])
+  }, [cursor, eventDefs, sequence])
 
   // Every new event resets the 5-second decision timer and hints.
   useEffect(() => {
@@ -273,6 +294,7 @@ function OutpostGame({ mission }) {
     setAllocation(INITIAL_ALLOCATION)
     setSol(1)
     setCursor(0)
+    setSequence(buildEventSequence(eventDefs.length))
     setResolution(null)
     setResult(null)
     setOutcome(null)
@@ -280,6 +302,29 @@ function OutpostGame({ mission }) {
   }
 
   const progress = levels.science
+
+  const introSteps = [
+    {
+      title: 'WE LANDED!',
+      text: `We survived the crash, Commander! This is our ${sector === 'mars' ? 'Mars habitat' : 'lunar lifeboat'}. It has 5 rooms that keep the crew alive: Air & Heat, Shield, Power, Garden and the Science Lab.`,
+      target: '#habitat-scene',
+    },
+    {
+      title: 'ONLY 10 BATTERIES',
+      text: 'But we only have 10 power batteries for all 5 rooms! To give one room more power, you must take power away from another. That is called a trade-off.',
+      target: '#power-grid',
+    },
+    {
+      title: 'SURPRISE PROBLEMS',
+      text: 'Every day an alarm will ring and a surprise problem will hit, like a solar flare or a broken oxygen tank. These come from real NASA data!',
+      target: '#event-card',
+    },
+    {
+      title: 'PLAY SMART',
+      text: 'Read the problem, move your batteries to the room that needs them most, then press EXECUTE SOL. Solve the problems, reach 100% and rewrite history! Stuck? Tap "Ask Astro-Bot".',
+      target: '#execute-panel',
+    },
+  ]
 
   return (
     <main className="mx-auto max-w-7xl px-3 pt-20 pb-16 sm:px-6">
@@ -406,6 +451,19 @@ function OutpostGame({ mission }) {
       </div>
 
       <AnimatePresence>
+        {phase === 'intro' && (
+          <RocketMascot
+            key="landing-intro"
+            steps={introSteps}
+            placement="bottom-left"
+            size={140}
+            finishLabel="Let's go!"
+            onFinish={() => {
+              sfx.success()
+              setPhase('planning')
+            }}
+          />
+        )}
         {phase === 'planning' && hintBubble && event && (
           <RocketMascot
             key={`hint-${event.key}`}
