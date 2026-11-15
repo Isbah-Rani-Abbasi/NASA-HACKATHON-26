@@ -1,0 +1,338 @@
+CHRONO-OUTPOST: Rewrite the Mission
+NASA Space Apps Challenge 2026: AI Prompt Log
+=====================================================================
+
+AI TOOL USED
+------------
+This project was built with Claude Code, Anthropic's AI coding assistant
+(Claude Code desktop app, model: Claude Opus 5.5).
+
+Claude Code wrote and edited the game's source code (React/JavaScript,
+CSS), created all SVG/Canvas illustrations and animations in code,
+generated the sound effects in code (Web Audio API), organised the NASA
+data files, tested the game in a built-in browser, and helped prepare the
+pitch, README, slide deck and submission text.
+
+Our team wrote the prompts below. We came up with the concept, chose the
+NASA missions and learning goals, designed the game flow and the visual
+style (we supplied the reference artwork described in prompt 7), reviewed
+every result, requested changes, tested the game, and checked the facts.
+
+The prompts are listed in the order they were given, exactly as typed
+(including typos). Where a prompt included a pasted document rather than
+instructions, the document is summarised in [square brackets]. Personal
+details such as email addresses have been removed.
+
+=====================================================================
+
+PROMPT 1: Build the complete game
+---------------------------------------------------------------------
+Act as a Senior Frontend Game Developer, Motion UI Designer, and Space Simulation Architect. Build a complete, kid-friendly (ages 7–12+), interactive space-themed web game for the 2026 NASA Space Apps Challenge titled **"CHRONO-OUTPOST: Rewrite the Mission"**.
+
+### 1. TECH STACK & PROJECT STRUCTURE (BACKEND-READY)
+- **Framework:** React (Vite) + Tailwind CSS v4 (`@import "tailwindcss";` in `src/index.css` with `@tailwindcss/vite` in `vite.config.js`).
+- **Installed Libraries:** `react-router-dom`, `axios`, `motion` (`import { motion, AnimatePresence } from "motion/react"`), `lucide-react`, `canvas-confetti`.
+- **Backend-Ready Service Layer (`src/services/apiClient.js`):**
+  - Configure an Axios instance with `baseURL: import.meta.env.VITE_API_BASE_URL || ""` so the frontend can seamlessly plug into a Node.js/Express backend later without refactoring components.
+  - Create `src/services/spaceWeatherService.js` that fetches live space weather events (`FLR`, `CME`, `SEP`) from NASA's CCMC DONKI API (`https://ccmc.gsfc.nasa.gov/DONKI-API/get/`) and automatically falls back to a bundled `src/data/donki_fallback.json` file if offline or rate-limited.
+- **Audio Engine (`src/utils/soundEffects.js`):** Use the browser's built-in Web Audio API (no external MP3 files needed) to synthesize sci-fi button clicks, mascot voice beeps, meteoroid whooshes, alarm sirens, engine explosion rumbles, and victory fanfare (with a global Mute/Unmute toggle in the top bar).
+
+---
+
+### 2. VISUAL THEME & GLOBAL ANIMATIONS
+- **Color Palette:** Deep Cosmic Navy (`#050816`), Nebula Indigo (`#0F172A`), Glowing Cyan (`#00F0FF`), Solar Amber (`#FFB800`), Mars Crimson (`#FF3B5C`), and Bio-Green (`#00E676`).
+- **Persistent Space Canvas (`src/components/SpaceBackdrop.jsx`):** A smooth 60fps HTML5 `<canvas>` rendering multi-layered twinkling stars, drifting nebula clouds, slowly rotating planets, and occasional shooting meteoroids with glowing tails.
+- **Interactive Mascot (`src/components/AstroBotMascot.jsx`):** A cute, floating animated robot astronaut SVG ("ASTRO-BOT") with blinking LED eyes, hovering thruster flame, speech bubbles with typewriter text effect, **"Next →"** and **"Skip"** buttons, and a **Spotlight Guide Mode** that highlights specific UI elements during tutorials.
+
+---
+
+### 3. COMPLETE USER FLOW & PAGES (STRICT SEQUENCE)
+
+#### PAGE 1: Landing Page (`/`)
+- **Visuals:** Full-screen animated deep-space canvas with rotating Earth, Moon, and Mars in the background and shooting meteoroids streaking across the frame.
+- **Mascot Onboarding Sequence:** Astro-Bot flies into the center-left of the screen and guides the young player step-by-step through 3 short, engaging dialogue steps:
+  1. *"Welcome, Junior Commander! Famous NASA missions like Apollo 13 and Mars Polar Lander ran into sudden space storms and disasters."*
+  2. *"Inside the Chrono-Simulator, you will pilot through the storm, survive the crash landing, and manage a real space outpost!"*
+  3. *"Balance Oxygen, Shields, Power, Food, and Science to turn famous NASA failures into historic victories!"*
+- **Action:** After the mascot finishes (or if the user clicks "Skip Intro"), reveal a large, pulsing glowing CTA button: **"MOVE TO COMPETITION →"** navigating to `/sectors`.
+
+#### PAGE 2: Sector Selection Hub (`/sectors`)
+- **Visuals:** Same cohesive cosmic color palette as the landing page, featuring a different animated space scene (orbiting satellites, solar wind waves, and a central Sun radar).
+- **Layout:** Two large, interactive **Square Mission Sector Cards** side-by-side with hover scale/glow effects:
+  1. **Square Card 1: `MISSION ON MOON`** — Features a rotating, cratered 3D-shaded Moon illustration, gravity/atmosphere stats (`16.6% Gravity | No Atmosphere`), and **"ENTER LUNAR SECTOR"** button.
+  2. **Square Card 2: `MISSION ON MARS`** — Features a rotating red Martian globe with dust swirls, stats (`38% Gravity | Thin CO2 Air | Comms Delay`), and **"ENTER MARTIAN SECTOR"** button.
+
+#### PAGE 3A: Moon Mission Briefing (`/moon`)
+- **Visuals:** Full Moon-themed animated environment—panoramic lunar horizon at the bottom, rising Earth in the black sky, floating lunar dust particles, and twinkling stars.
+- **Competition List:** Displays available Lunar Sector challenges:
+  - **Active Mission Card:** **APOLLO 13 — "The Lunar Lifeboat" (1970)** (Explain that an oxygen tank rupture crippled the ship; player must survive the meteoroid storm and run the emergency lunar outpost). Clicking **"LAUNCH MISSION"** navigates to `/cockpit/apollo-13`.
+  - Include 1–2 locked preview cards (*"Artemis Base Alpha — Coming Soon"*) so it feels like a real competition hub.
+
+#### PAGE 3B: Mars Mission Briefing (`/mars`)
+- **Visuals:** Full Mars-themed animated environment—red rocky canyons, blowing Martian dust storms across the screen, and two tiny moons (Phobos & Deimos) orbiting above.
+- **Competition List:** Displays Martian Sector challenges:
+  - **Active Mission Card:** **MARS POLAR LANDER — "The Red Storm" (1999)** (Explain that solar flares and descent anomalies threatened the lander; player must dodge incoming solar flares and stabilize the Martian outpost). Clicking **"LAUNCH MISSION"** navigates to `/cockpit/mars-lander`.
+  - Include 1–2 locked preview cards (*"Olympus Mons Outpost — Coming Soon"*).
+
+#### PAGE 4: Cockpit POV Action Sequence (`/cockpit/:missionId`)
+- **Visuals (First-Person Cockpit POV):** Render a metallic spaceship cockpit frame (windshield struts, glowing dashboard instruments, radar screen) looking out into space toward either the Moon or Mars.
+- **15-Second Interactive Dodge Mini-Game:**
+  - **Controls:** Player moves the spacecraft left/right/up/down using **Mouse/Touch drag** or **Arrow/WASD keys** to dodge incoming hazards.
+  - **Moon Variant:** Glowing flaming **Meteoroids** hurtling toward the windshield.
+  - **Mars Variant:** Intense **NASA DONKI Solar Flare Plasma Bolts** streaking across space.
+  - **Performance Link:** Track `hullIntegrity` (starts at 100%). Dodging hazards preserves starting power for the next stage!
+- **Scripted Engine Explosion Finale:** At the 15-second mark, a critical red warning flashes (`"WARNING: MAIN ENGINE OVERLOAD!"`), an unavoidable shockwave hits, the cockpit shakes (`CSS shake animation`), sparks/fire particles explode across the windshield (`HTML5 Canvas explosion`), and the screen transitions smoothly to the Outpost Survival page.
+
+#### PAGE 5: Final Outpost Survival Game (`/outpost/:missionId`)
+- **Environment Theme:**
+  - If `apollo-13`: Animated **Lunar Surface Outpost** (gray craters, solar panels, protective dome, Earth in the sky).
+  - If `mars-lander`: Animated **Martian Surface Outpost** (red dunes, blowing dust particles, solar arrays, pinkish-amber sky).
+- **Mascot Interactive Tutorial (Spotlight Guide):**
+  - Before Turn 1 starts, Astro-Bot appears and highlights each of the **5 Outpost Subsystems in strict increasing priority order (Tier 5 Highest $\rightarrow$ Tier 1 Lowest)** with a glowing spotlight ring around each slider:
+    1. **Tier 5 (CRITICAL): Life Support ($O_2$ & Water)** — *"Never let this hit 0%, or the mission fails!"*
+    2. **Tier 4 (HIGH): Radiation Shielding** — *"Boost this when NASA DONKI detects a Solar Flare!"*
+    3. **Tier 3 (MEDIUM-HIGH): Power Generation** — *"Produces the energy points you distribute each day."*
+    4. **Tier 2 (MEDIUM): Food Production** — *"Feeds your crew; you may need to dim grow-lights during storms."*
+    5. **Tier 1 (WIN GOAL): Science Ops** — *"Lowest survival priority, but reach 100% Science to rewrite history and win!"*
+- **Core Gameplay Loop (6 Turns / Sols):**
+  - Each turn displays a real **NASA DONKI Space Weather Alert** (`FLR` flare class, `CME` speed, or `SEP` particle storm) translated into kid-friendly instructions.
+  - Player adjusts power sliders across the 5 priority tiers within their `Available Power` budget and clicks **"EXECUTE SOL"**.
+  - Play a 2-second visual animation on the outpost (shield dome glowing against solar rays, solar panels charging, greenhouses lighting up) and update all 5 subsystem bars.
+- **Endings:**
+  - **Victory (`Science Ops === 100%` and `Life Support > 0%`):** Trigger `canvas-confetti`, unlock a collectible **"History Rewritten Mission Patch"**, and show a side-by-side comparison of **Real NASA History vs. How You Saved the Mission**.
+  - **Failure (`Life Support <= 0%` or `Crew Health <= 0%`):** Show which subsystem failed with an encouraging tip from Astro-Bot and a **"RETRY MISSION"** button.
+
+---
+
+### 4. DATA FILES TO INCLUDE
+1. `src/data/missions.json`: Configuration for `apollo-13` (Moon) and `mars-lander` (Mars) with starting subsystem values, environment themes, and historical rewrite stories.
+2. `src/data/donki_fallback.json`: Authentic NASA DONKI JSON records (`FLR`, `CME`, `SEP` events from the May 2024 solar storms) so the space weather engine works 100% offline or online.
+
+Deliver the complete, runnable codebase with clean modular components and zero placeholder TODOs.
+
+
+PROMPT 2: Commit
+---------------------------------------------------------------------
+Commit the working tree changes with a sensible message.
+
+
+PROMPT 3: 5-room habitat, 10-unit power grid, unexpected events
+---------------------------------------------------------------------
+Refactor `src/pages/OutpostPage.jsx` and `src/components/OutpostScene.jsx` so BOTH missions (`apollo-13` on the Moon and `mars-lander` on Mars) feature a deeply interactive, animated **5-Room Habitat Cross-Section** driven by real **NASA DONKI** and **NASA OSDR** datasets — completely replacing the boring slider UI.
+
+### 1. STRICT 10-UNIT ZERO-SUM POWER BUDGET & TACTILE ROOM CONTROLS
+- Replace all HTML range sliders with a **10-Unit Zero-Sum Power Grid** (each room holds 0–5 glowing energy cells; total allocated across all 5 rooms cannot exceed `10 / 10` units).
+- Every room card and habitat room must feature tactile **`−` (Cut Power)** and **`+` (Boost Power)** buttons, glowing battery blocks, and live status badges (`CRITICAL`, `OPTIMAL`, `LOW`).
+- **Always-Enabled Execution (Allow Mistakes & Consequences!):**
+  - Keep the **`EXECUTE SOL`** button **always enabled** regardless of whether the player chose the optimal trade-off or made a mistake!
+  - If the player executes a **correct** trade-off for the active crisis: play a positive visual resolution animation (e.g., blue forcefield bounces solar rays, frost melts, LED crops bloom, trajectory advances), increase **Mission Success Progress**, and show a **"NASA Historical Log"** card comparing their decision to the real Apollo 13 (1970) or Mars Polar Lander (1999) mission.
+  - If the player executes a **wrong / underpowered** trade-off: play a dramatic consequence animation (hull sparks, cabin frost spreading, crew health/morale dropping, or power brownout), explain clearly *why* that subsystem failed in kid-friendly STEM terms, and let them continue or retry if Life Support hits 0%.
+
+### 2. INTERACTIVE 5-ROOM ANIMATED CUTAWAY (APOLLO 13 & MARS VARIANTS)
+Render an animated interior cross-section viewport (`OutpostScene.jsx`) with reacting mini-astronauts and live cause-and-effect visuals for both missions:
+1. **Tier 5 — Life Support Bay (`O₂` & Cabin Temp):**
+   - Low power (`≤1` cell): Animated blue frost/ice creeps across the viewport edges, astronauts shiver with `"LOW O₂ / FREEZING!"` speech bubbles.
+   - High power (`≥4` cells): Frost melts, green oxygen bubbles rise, astronauts cheer.
+2. **Tier 4 — Radiation Shield Dome:**
+   - High power (`≥4` cells): Projects an animated glowing cyan forcefield dome around the lunar module / Mars habitat that visibly deflects incoming NASA DONKI solar flare rays.
+   - Low power during a flare: Red radiation waves penetrate the hull with warning flashes.
+3. **Tier 3 — Solar & Reactor Bay:**
+   - Features animated glowing power cables connecting to the other 4 rooms (energy pulses visibly travel along wires when power is routed).
+   - **Mars Variant:** Martian red dust accumulates on solar arrays during dust storms, requiring Reactor/Solar boost (`≥4` cells) to maintain next-turn power budget.
+4. **Tier 2 — NASA OSDR Space Garden:**
+   - Powered by real **NASA OSDR (`VEG-05` / Veggie)** parameters (`Red + Blue 400 µmol/m²/s LED spectrum`).
+   - High power (`≥4` cells): Pink/purple NASA grow-lights turn on and space lettuce visibly sprouts and grows; low power causes plants to droop with hungry crew icons.
+5. **Tier 1 — Earth Return / Mars Comms & Science Lab:**
+   - **Apollo 13 Variant:** Displays a live **Moon-to-Earth Return Trajectory Map** that draws the spacecraft's path closer to Earth as Science Ops progresses toward `100%`.
+   - **Mars Polar Lander Variant:** Displays a **"Comms Delay: 14 mins"** telemetry dish and **Martian Polar Ice Core Analysis** progress toward `100%`.
+
+### 3. UNEXPECTED EVENTS ENGINE (REAL NASA DONKI + OSDR DATA)
+- Create `src/data/osdr_biology.json` with real NASA OSDR plant growth (`VEG-05`) and human spaceflight physiology (`CO₂` & thermal limits) facts, and connect it alongside `spaceWeatherService.js` (NASA DONKI `FLR`, `CME`, `SEP` live/fallback data).
+- Trigger dramatic, mission-specific **Unexpected Events** each Sol (plus a **"⚡ Trigger Next Event"** test button in the top bar) that force clear engineering trade-offs:
+  - *Apollo 13 Events:* `Oxygen Tank #2 Rupture & Deep Freeze` (Boost Life Support `5/5`, cut Shield & Lab), `NASA DONKI X2.2 Solar Flare` (Boost Shield `4/5`, cut Garden & Lab), `Lunar Eclipse Shadow` (Boost Reactor `4/5`), `OSDR Crew Calorie Drop` (Boost Space Garden `4/5`), `Trans-Earth Injection Burn` (Boost Earth Return Lab `4/5`).
+  - *Mars Polar Lander Events:* `Global Martian Dust Storm` (Boost Solar/Reactor `4/5` to clear dust), `NASA DONKI SEP Particle Storm` (Boost Shield `4/5` during 14-min Earth comms blackout), `Polar Sub-Zero Night (-80°C)` (Boost Life Support `5/5`), `OSDR Hydroponic Nutrient Cycle` (Boost Space Garden `4/5`), `Orbital Relay Uplink Window` (Boost Science Lab `4/5`).
+- Include a clickable **"🔬 Inspect Real NASA Data"** drawer/modal showing the exact DONKI event ID, flare class, CME speed (`km/s`), and OSDR experiment metrics driving the current turn, plus a kid-friendly *"Why This Matters"* explanation.
+
+### 4. SMART 5-SECOND ASTRO-BOT CO-PILOT & VICTORY SCREEN
+- Add a **5-second decision timer** when an unexpected event hits. If the child hasn't adjusted power after 5 seconds (or boosts the wrong room), **Astro-Bot** pops up with pulsing green (`▲ BOOST`) and amber (`▼ CUT`) target highlights on the exact rooms and gives a friendly, clear hint.
+- **Victory Screen (`Science/Mission Progress === 100%` & `Life Support > 0%`):** Trigger `canvas-confetti` and display an animated **Mission Achieved Visual Window** (Pacific Ocean parachute splashdown for **Apollo 13**; stabilized polar lander transmitting data for **Mars Polar Lander**), unlocking a collectible mission patch and a side-by-side **Real NASA History vs. Your Rewritten Mission** breakdown.
+
+
+PROMPT 4: Explain the game
+---------------------------------------------------------------------
+how is game working
+
+
+PROMPT 5: Make events automatic with an alarm, add an Astro-Bot hint option
+---------------------------------------------------------------------
+but in this we have trigger evvent why not event happeing automatically and alarm kind thing tell user that this trigger is happening like solar flare starts falling etc etc and  there is an option of
+[message interrupted, then re-sent as:]
+but in this we have trigger evvent why not event happeing automatically and alarm kind thing tell user that this trigger is happening like solar flare starts falling etc etc and  there is an option of astro bot hint hich tell uer what to do euate user
+
+
+PROMPT 6: New rocket mascot, 8-bit headings, navigation, landing/cockpit redesign
+---------------------------------------------------------------------
+Update the frontend UI, custom vector SVG animations, typography, and navigation across the multi-page React app (`CHRONO-OUTPOST`) with strict page-by-page separation. Do NOT use static `.jpg` files; build all illustrations as clean, animated custom SVG components.
+
+### 1. UNIFIED CONTEXT-TRIGGERED ROCKET MASCOT + SIDE-BY-SIDE DIALOGUE BOX (`RocketMascot.jsx`)
+- **Single Mascot Design Across the Entire App:**
+  - Replace the old blue robot mascot globally across the entire codebase with a single reusable custom animated SVG component: the **cute astronaut riding a white-and-red rocket** giving a peace sign (`✌️`), with **NO background stars or planets attached** to the sprite.
+- **Side-by-Side Mascot & Dialogue Layout (Never Put the Mascot Inside the Text Box!):**
+  - Render the Rocket-Riding Mascot floating freely on the **outside left**, with a separate dark translucent rounded glass dialogue box (`ASTRO-BOT • HELLO!`, step counter `1/3`, typewriter text with blinking cyan cursor `|`, `Skip` button, and glowing cyan `Next >` pill button) positioned beside it on the right.
+- **Appear ONLY When Info or Help Is Needed (Never Clutter Active Gameplay):**
+  - Show this mascot + dialogue pair **only when delivering guidance, info, or hints**:
+    1. **Landing Page:** Flies in smoothly during the welcome intro (or when a feature pill is clicked) and flies away/hides when `Skip` or `Finish` is clicked.
+    2. **Mission Briefing / Outpost Simulator:** Flies in when a new mission briefing starts, when an unexpected NASA crisis hits, or when the player needs a 5-second co-pilot hint (`▲ BOOST` / `▼ CUT`), and smoothly flies away once dismissed.
+    3. **Cockpit Storm Dodge:** Keep the mascot hidden during active 15-second meteoroid dodging so the pilot's view stays 100% clear.
+- **Motion:** Flies smoothly into position from off-screen, stops at its anchor spot, and continuously hovers gently up and down (`translateY`) with flickering animated rocket exhaust flames.
+
+### 2. GLOBAL 8-BIT HEADINGS & HOME/EXIT NAVIGATION (ALL PAGES)
+- **8-Bit Retro Headings:** Load `'Press Start 2P'` from Google Fonts in `index.html` and apply it to all main page headings (`CHRONO`, `OUTPOST`, `Moon Missions`, `Mars Missions`, `METEOROID STORM`, `MISSION ACHIEVED`, etc.), keeping body text clean and readable.
+- **Global Home & Exit Navigation:**
+  - Add a clickable **"🏠 Home"** button in the top navigation bar of EVERY page so the user can return to the Landing Page from anywhere.
+  - Once a mission starts (Cockpit Storm Dodge & Outpost Simulator pages), add a clear **"🚪 Exit Mission"** button in the top bar that safely exits back to the Mission Selection or Home screen.
+
+### 3. PAGE 1: LANDING PAGE (`LandingPage.jsx`) — STRICT LEFT/RIGHT SPLIT LAYOUT
+Keep the existing starry background and shooting stars, **remove the large bottom-right Earth completely**, and structure the two-column layout as follows:
+- **Full-Screen Scattered Planets (Background Layer):**
+  - Scatter stylized planets (ringed blue-striped gas giant, small cratered cookie-planet, distant moon, teal ringed planet, orange-striped planet) across the **entire landing page background** at different depths with slow orbital drift animations — do NOT trap them in one corner.
+- **LEFT SIDE — `CHRONO` & Hanging Astronauts ONLY (`download.jpg` style):**
+  - Render bold 3D/sticker-style **`CHRONO`** block letters in an 8-bit retro style.
+  - Hanging from thin white vertical strings directly beneath the letters of `CHRONO`, render 4 cute vector astronauts gently bobbing up and down at staggered speeds (`@keyframes floatString`).
+  - Keep the left side dedicated strictly to `CHRONO` and the hanging astronauts (do NOT put `OUTPOST` or text blocks below them).
+- **RIGHT SIDE — `OUTPOST`, Text Content & Side-by-Side Mascot Dialogue:**
+  - Display the main heading **`OUTPOST`** in bold glowing 8-bit typography, followed underneath by **`REWRITE THE MISSION`**, the mission intro paragraph, the 3 interactive feature pills (`Real NASA DONKI space weather`, `Dodge storms in the cockpit`, `Rewrite space history`), and the primary **`🚀 LAUNCH MISSION`** CTA button.
+  - Below/beside this right-column content, render the free-floating **Rocket-Riding Mascot** on the left with its separate glass dialogue card on the right when intro/info is active.
+
+### 4. PAGE 2: LUNAR & MARS MISSION HUBS (`MoonMissions.jsx` & Any Other Earth Views)
+- **Illustrated Sticker-Style Earth SVG (`Planet Earth Sticker.jpg` style):**
+  - On the Lunar Sector (`Moon Missions`) page and anywhere else Earth appears (except the Landing Page), replace the plain Earth circle with a **custom animated illustrated Earth SVG** featuring bold dark comic outlines, glossy white sticker border, vibrant green/tan continents, swirling ocean currents, and slow rotation/cloud drift.
+
+### 5. PAGE 3: SPACESHIP COCKPIT DODGE STAGE (`CockpitPage.jsx`)
+- Keep all outer space elements (incoming meteoroids, Moon/Mars, starfield, timer, Hull Integrity gauge, radar, Storm Crossing bar) intact, and **upgrade the viewport frame into a detailed sci-fi Spaceship Cockpit interior**:
+  - Add an angled metallic cockpit window frame with glowing cyan trim, overhead tactical switch panels, side structural struts, and a bottom pilot dashboard console (blinking status LEDs, throttle levers, radar housing, and digital telemetry screens) that subtly tilts/shakes when steering left/right or taking a hit.
+
+
+PROMPT 7: Reference pictures for the art style
+---------------------------------------------------------------------
+see her eare ref icture how i want naimation to look so use these
+
+[Three reference images were attached:
+ 1. A poster of cartoon astronauts hanging on strings below big
+    letters, with a blue ringed planet and small orange planets.
+ 2. A cute astronaut riding a white-and-red rocket, giving a peace sign.
+ 3. A sticker-style cartoon Earth showing the Americas.
+ These were used only as style references; all game art was drawn
+ from scratch in SVG code. No NASA logos or lettering were copied.]
+
+
+PROMPT 8: Layout fixes, zero scrolling, navigation
+---------------------------------------------------------------------
+Refine the layout, alignment, viewport fit (zero scrolling), navigation bar, and SVG illustrations across `CHRONO-OUTPOST` with the following exact fixes:
+
+### 1. GLOBAL TOP NAVIGATION BAR (ALL PAGES)
+- **Upgrade the Home Button Icon:** Replace the generic emoji house icon (`🏠`) on the **Home** button with a sleek, custom sci-fi/8-bit minimalist SVG icon (such as a glowing cyan space station/command base or sleek geometric retro-futuristic home glyph) styled consistently with the `Sound On` pill button.
+- **Move `← Back to Sector Hub` Into the Top Navbar (Lunar & Mars Mission Pages):**
+  - On both the **Lunar Sector (`Moon Missions`)** and **Martian Sector (`Mars Missions`)** pages, remove the standalone `← Back to Sector Hub` pill from inside the page body and place it directly inside the **top navigation bar** next to the `Home` and `Sound On` buttons on the right (or beside the sector badge on the left) so the main board moves up cleanly.
+
+### 2. PAGE 1: LANDING PAGE (`LandingPage.jsx`) — ALIGNMENT, SINGLE STRINGS & ZERO SCROLL
+- **Fit Entirely Inside `100vh` (`overflow-hidden`):** Adjust vertical spacing and padding so the entire Landing Page fits comfortably on a single desktop screen with **zero vertical scrolling**.
+- **Top-Align `CHRONO` and `OUTPOST`:** Move the left-side **`CHRONO`** heading upward so its top edge aligns horizontally on the exact same baseline/level as **`OUTPOST`** on the right column, keeping their current 8-bit font sizes intact.
+- **Clean Up Hanging Astronauts Under `CHRONO`:**
+  - Keep **only ONE single vertical white string** per hanging astronaut (remove the second/double parallel strings attached to each astronaut).
+  - Completely remove the blue ringed planet, small orange cratered planet, and any extra hanging planet strings from underneath `CHRONO` so the space beneath the hanging astronauts is clean.
+- **Move Mascot + Dialogue Box Under `CHRONO` (Bottom-Left):**
+  - Position the **Rocket-Riding Astronaut Mascot** and its side-by-side **Astro-Bot Dialogue Box** underneath the hanging astronauts on the **left side** of the screen (instead of under `LAUNCH MISSION` on the right), ensuring everything fits neatly above the bottom fold without scrolling.
+
+### 3. PAGE 2: SECTOR HUB (`SectorHub.jsx`) — COMPACT CARDS & ZERO SCROLL
+- **Eliminate Vertical Scrolling (`100vh` Fit):**
+  - Fix the top header (`CHOOSE YOUR SECTOR`) so it is never clipped or cut off at the top under the navbar.
+  - Make the two sector cards (**`MISSION ON MOON`** and **`MISSION ON MARS`**) more compact in height and padding, and slightly reduce the Moon/Mars planet sizes inside the cards so the entire Sector Hub (heading, subtitle, and both cards with their `ENTER LUNAR SECTOR →` / `ENTER MARTIAN SECTOR →` buttons) fits completely inside one screen with **no vertical scrollbar**.
+
+### 4. PAGE 3: LUNAR & MARTIAN MISSION BOARDS (`MoonMissions.jsx` & `MarsMissions.jsx`) — COMPACT FIT & NON-BLOCKING MASCOT
+- **Compact Mission Cards (No Scrolling):** Tighten vertical spacing and card padding on both the **Moon Missions** and **Mars Missions** boards (enabled by moving `← Back to Sector Hub` into the top navbar) so the mission cards fit cleanly within the viewport without scrolling.
+- **Keep Mascot Briefing Clear of Mission Text:** When the Rocket Mascot + Astro-Bot briefing box appears on the Lunar/Martian mission pages, anchor it cleanly in a dedicated non-overlapping corner/dock (or compact floating bar) so it does not cover up the active mission description text (`MARS POLAR LANDER` / `APOLLO 13`).
+
+
+PROMPT 9: Remove Home during missions, make the mascot optional
+---------------------------------------------------------------------
+REMOVE HOME FROM MISSION PAE AS WE HAVE EXI MISSION BUTTON SE HOME PAGE IS CAUSING REDUNDANCEY AND ON MISSION PAGE KEEP AN OPTION SO WHEN USER SLECT THAT OPTION ONLY THEN MASCOT CAME IN AND GUIDE ON EVERY ACTION APPEARANCE OF MASCOT IS IRRITATING
+
+
+PROMPT 10: Remove the guide toggle and the Earth images
+---------------------------------------------------------------------
+SEE THERE ARE 2 OPTIONS LIKE REDUNDANT TO CALL AC]SRO BOT REMOVE COMPLETE THAT TOOGLE THING astro BOT GUID JUST KEEP ASK ATRO BOT:WHAT SHOULD I DO? AND RMEOVE THIS EARTH FROM MISSION PAGE AND REOMVE THIS EARTH FROM MOON MISSION PAGE TTO
+
+[Two screenshots of the game were attached, showing the Earth images
+ to remove.]
+
+
+PROMPT 11: Pitch for the judges
+---------------------------------------------------------------------
+NOW GIVE ME WHOLE DESCRIPTION HOW THAT WE MADE WHAT IS OUR THUGHT BEHIND IT , THE NASA ORGINAL FAILED STORIES E HAVE USED  AND ALL WHAT WE RGOIJG TO PRESN TO OUR JUDGES , WE ARE GONG TO SHOW OUR GAME TO THEM AND WHILE DEMNSTRATUNG WE WILLL BE MENTINING EVERYTHING E EHAVE 7 MINUTESW EHAVE TO PTCH EVERYTHING IN THT
+
+
+PROMPT 12: Simple explanation of the game flow
+---------------------------------------------------------------------
+OKAY LISTEN , IN SIMPLE LANGUAGE EXPLAIN ME GAME FLOW FOR NON TECHNICAL PEOPLE LIKE THE THING IS OUR MOTO IS WE HAVE TO EDUCATE CHILDEREN OF 7 TO 12 ANDW E HAVE PICKED THE FAILED MISSION OF nasa SO A KID COME PLAY AND IF THEY SUCCESFFULLY MANAGE RESOURCES LIKE A SUCCESSFUL TRADE OFF OD RESOURCES TO GET OVER A PROBELM OR UNEXPPECTED EVENT SO EPLAIN IN THIS WAY
+
+
+PROMPT 13: Mascot explains the goal when the player lands
+---------------------------------------------------------------------
+LISTEN ON MISSION PAGES WHEN THE USER LANDED I WANT MASCOT TO EXPLAIN WHAT THE KID HAS TO DO LIKE MASCOT LIKE THEY HAVE 5 RESOURCES AN UNEXPEDTED EVENT OCCUR AND THEY HAVE TO PLAY SMARTLY TRADE ODD RESORCES TO SURVIVE THAT PROBLEM AND THERE MUST BE SKI OPTION IF SOMONE DOES WANT THEY CAN SKIP
+
+
+PROMPT 14: Shuffle the events
+---------------------------------------------------------------------
+LISTEN SEQ OF EVNNT IS ALWAYS SAME
+
+
+PROMPT 15: Number of events
+---------------------------------------------------------------------
+tell me how mmany unexpected event are occuring on mission
+
+
+PROMPT 16: Event names
+---------------------------------------------------------------------
+tell me the name of 8 unexpected event
+
+
+PROMPT 17: Check and update the README
+---------------------------------------------------------------------
+[Pasted the project's README.md text at that time.]
+
+is this reasme.md correct if not make update one
+
+
+PROMPT 18: Slides and submission materials
+---------------------------------------------------------------------
+[Pasted the NASA Space Apps email "Global judging: how to submit your
+ project on the NASA Space Apps website", which describes the deadline,
+ the required project demo (a video of up to 30 seconds or up to
+ 7 slides), the form fields, and the rules on AI use. Email addresses
+ removed.]
+
+this is what we have to submit now i want ppt like we have to sub ut either ppt or demo video so i want ppt and give me everthing for submission
+
+
+PROMPT 19: Finding the slide file
+---------------------------------------------------------------------
+how to download pptx
+
+
+PROMPT 20: Project summary for the form
+---------------------------------------------------------------------
+Provide a summary of your project. What did you develop? How does it address the challenge? Why is it important? We suggest a 50-200 word summary.
+
+
+PROMPT 21: Detailed project description for the form
+---------------------------------------------------------------------
+Provide details about your project. Consider the following questions: What does it do or how does it work? What benefits does it have? What is the intended impact of the project? What tools, coding languages, hardware, or software did you use to develop your project? How is your project creative? What factors did your team consider?
+
+
+PROMPT 22: This prompt log
+---------------------------------------------------------------------
+also give me txt file in which there are all prompts i gave you and mention that i use claude code
+
+=====================================================================
+End of prompt log. Tool: Claude Code by Anthropic (Claude Opus 5.5).

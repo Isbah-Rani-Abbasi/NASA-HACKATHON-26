@@ -1,0 +1,25 @@
+CHRONO-OUTPOST: Rewrite the Mission
+NASA Space Apps Challenge 2026: Project Links
+=============================================
+
+PLAY THE GAME (deployed website)
+https://nasa-hackathon-26.vercel.app
+
+SOURCE CODE (GitHub repository)
+https://github.com/Isbah-Rani-Abbasi/NASA-HACKATHON-26
+
+Both links are public. No login, download or install is needed.
+The game runs in any modern web browser on a laptop, desktop or tablet.
+
+How to play
+-----------
+1. Open the game link and click "LAUNCH MISSION".
+2. Choose the Moon (Apollo 13) or Mars (Mars Polar Lander).
+3. Dodge the 15-second storm in the cockpit.
+4. At the habitat, share 10 power batteries between 5 rooms to survive
+   each surprise event. Tap "Ask Astro-Bot: what should I do?" for help.
+5. Reach 100% Mission Progress to rewrite history.
+
+Tip: turn sound on, because all sound effects are part of the experience.
+
+Built with Claude Code (Anthropic) as an AI coding assistant.
